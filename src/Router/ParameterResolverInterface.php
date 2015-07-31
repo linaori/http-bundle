@@ -22,7 +22,7 @@ interface ParameterResolverInterface
      *
      * Example:
      *  - Route: "/profile/{username}/"
-     *  - generate("app.profile.view", ["username" => $user]
+     *  - generate("app.profile.view", ["username" => $user])
      *  - { return $user->getUsername(); }
      *
      * @param string $name   Name of the parameter as defined in the Route
