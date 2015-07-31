@@ -17,26 +17,32 @@ final class DecorateRouterPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $container
-            ->register('iltar.http.parameter_resolving_router')
-            ->setClass(ParameterResolvingRouter::class)
-            ->addArgument(new Reference('iltar.http.parameter_resolving_router.inner'))
-            ->setPublic(false)
-            ->setDecoratedService('router');
-
         $resolvers = [];
 
-        foreach (array_keys($container->findTaggedServiceIds('router.param_resolver')) as $serviceId) {
+        foreach (array_keys($container->findTaggedServiceIds('router.parameter_resolver')) as $serviceId) {
             $newId = 'iltar.http.parameter_resolving.' . $serviceId;
             $container
                 ->register($newId)
                 ->setClass(LazyParameterResolver::class)
-                ->addArgument(new Reference('service_container'), $newId . '.inner')
+                ->addArgument(new Reference('service_container'))
+                ->addArgument($newId . '.inner')
                 ->setPublic(false)
                 ->setDecoratedService($serviceId);
 
             $resolvers[] = new Reference($newId);
         }
+
+        if (empty($resolvers)) {
+            return;
+        }
+
+        $container
+            ->register('iltar.http.parameter_resolving_router')
+            ->setClass(ParameterResolvingRouter::class)
+            ->addArgument(new Reference('iltar.http.parameter_resolving_router.inner'))
+            ->addArgument(new Reference('iltar.http.parameter_resolver_collection'))
+            ->setPublic(false)
+            ->setDecoratedService('router');
 
         $container->findDefinition('iltar.http.parameter_resolver_collection')->setArguments([$resolvers]);
     }

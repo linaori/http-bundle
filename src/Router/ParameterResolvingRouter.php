@@ -16,11 +16,17 @@ final class ParameterResolvingRouter implements RouterInterface
     private $router;
 
     /**
+     * @var ResolverCollectionInterface
+     */
+    private $resolverCollection;
+
+    /**
      * @param RouterInterface $router
      */
-    public function __construct(RouterInterface $router)
+    public function __construct(RouterInterface $router, ResolverCollectionInterface $resolverCollection)
     {
-        $this->router = $router;
+        $this->router             = $router;
+        $this->resolverCollection = $resolverCollection;
     }
 
     /**
@@ -52,7 +58,7 @@ final class ParameterResolvingRouter implements RouterInterface
      */
     public function generate($name, $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
     {
-        return $this->router->generate($name, $parameters, $referenceType);
+        return $this->router->generate($name, $this->resolverCollection->resolve($parameters), $referenceType);
     }
 
     /**

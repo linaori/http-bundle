@@ -74,6 +74,6 @@ services:
     app.router.user-param-resolver:
         class: App\AppUser\UserParameterResolver
         tags:
-            - { name: router.param_resolver }
+            - { name: router.router.parameter_resolver }
 ```
 

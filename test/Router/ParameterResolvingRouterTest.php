@@ -14,20 +14,22 @@ class ParameterResolvingRouterTest extends \PHPUnit_Framework_TestCase
 {
     public function testDelegation()
     {
+        $routes     = $this->prophesize(RouteCollection::class);
         $context    = $this->prophesize(RequestContext::class);
         $decorated  = $this->prophesize(RouterInterface::class);
-        $collection = $this->prophesize(RouteCollection::class);
+        $collection = $this->prophesize(ResolverCollectionInterface::class);
 
         $decorated->setContext($context)->shouldBeCalled();
         $decorated->getContext()->willReturn($context);
-        $decorated->getRouteCollection()->willReturn($collection);
+        $decorated->getRouteCollection()->willReturn($routes);
         $decorated->match('/path-matcher')->willReturn(true);
         $decorated->generate('app.route', [], UrlGeneratorInterface::ABSOLUTE_PATH)->willReturn('/returned/path/');
+        $collection->resolve([])->willReturn([]);
 
-        $router = new ParameterResolvingRouter($decorated->reveal());
+        $router = new ParameterResolvingRouter($decorated->reveal(), $collection->reveal());
         $router->setContext($context->reveal());
         $this->assertSame($context->reveal(), $router->getContext());
-        $this->assertSame($collection->reveal(), $router->getRouteCollection());
+        $this->assertSame($routes->reveal(), $router->getRouteCollection());
         $this->assertTrue($router->match('/path-matcher'));
         $this->assertEquals('/returned/path/', $router->generate('app.route'));
     }
