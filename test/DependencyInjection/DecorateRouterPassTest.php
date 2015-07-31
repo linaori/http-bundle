@@ -14,6 +14,10 @@ class DecorateRouterPassTest extends \PHPUnit_Framework_TestCase
         $container = new ContainerBuilder();
         $pass      = new DecorateRouterPass();
 
+        $container
+            ->register('iltar.http.parameter_resolver_collection')
+            ->setClass('stdClass');
+
         $pass->process($container);
 
         $this->assertTrue($container->has('iltar.http.parameter_resolving_router'));

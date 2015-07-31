@@ -2,7 +2,7 @@
 namespace Iltar\HttpBundle\Router;
 
 /**
- * @author Iltar van der Berg <ivanderberg@hostnet.nl>
+ * @author Iltar van der Berg <kjarli@gmail.com>
  * @covers Iltar\HttpBundle\Router\ResolverCollection
  */
 class ResolverCollectionTest extends \PHPUnit_Framework_TestCase
@@ -21,7 +21,7 @@ class ResolverCollectionTest extends \PHPUnit_Framework_TestCase
             [
                 ['user' => 'henk', 'profile' => 42],
                 ['user' => 'henk', 'profile' => 42],
-                new CallableResolver(function ($key, $value) {
+                new CallableResolver(function ($key) {
                     return $key === 'user';
                 }, function ($key, $value) {
                     return $value . '-user';
@@ -30,9 +30,9 @@ class ResolverCollectionTest extends \PHPUnit_Framework_TestCase
             [
                 ['user' => new \stdClass()],
                 ['user' => 'henk'],
-                new CallableResolver(function ($key, $value) {
+                new CallableResolver(function ($key) {
                     return $key === 'user';
-                }, function ($key, $value) {
+                }, function () {
                     return 'henk';
                 })
             ],
