@@ -1,0 +1,43 @@
+{
+  "name"        : "iltar/http-bundle",
+  "description" : "Adding extra functionality to Symfony",
+  "license"     : "MIT",
+  "type"        : "symfony-bundle",
+  "keywords"    : ["Symfony", "Http", "Bundle"],
+
+  "authors": [
+    {
+      "name"     : "Iltar van der Berg",
+      "email"    : "kjarli@gmail.com",
+      "homepage" : "https://github.com/iltar"
+    }
+  ],
+
+  "require": {
+    "php"                          : "^5.5",
+    "symfony/config"               : "^2.7|^3.0",
+    "symfony/dependency-injection" : "^2.7|^3.0",
+    "symfony/http-kernel"          : "^2.7|^3.0",
+    "symfony/routing"              : "^2.7|^3.0"
+  },
+
+  "require-dev" : {
+    "phpunit/phpunit" : "^4.7"
+  },
+
+  "autoload": {
+    "psr-4": {
+      "Iltar\\HttpBundle\\" : "src/"
+    }
+  },
+
+  "autoload-dev": {
+    "psr-4": {
+      "Iltar\\HttpBundle\\" : "test/"
+    }
+  },
+
+  "archive": {
+    "exclude": [ "/test" ]
+  }
+}
