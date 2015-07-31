@@ -1,14 +1,16 @@
 <?php
 namespace Iltar\HttpBundle\Router;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\Matcher\RequestMatcherInterface;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
  * @author Iltar van der Berg <kjarli@gmail.com>
  */
-final class ParameterResolvingRouter implements RouterInterface
+final class ParameterResolvingRouter implements RouterInterface, RequestMatcherInterface
 {
     /**
      * @var RouterInterface
@@ -21,7 +23,8 @@ final class ParameterResolvingRouter implements RouterInterface
     private $resolverCollection;
 
     /**
-     * @param RouterInterface $router
+     * @param RouterInterface             $router
+     * @param ResolverCollectionInterface $resolverCollection
      */
     public function __construct(RouterInterface $router, ResolverCollectionInterface $resolverCollection)
     {
@@ -67,5 +70,17 @@ final class ParameterResolvingRouter implements RouterInterface
     public function match($pathinfo)
     {
         return $this->router->match($pathinfo);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function matchRequest(Request $request)
+    {
+        if (!$this->router instanceof RequestMatcherInterface) {
+            throw new \BadMethodCallException('Router has to implement the ' . RequestMatcherInterface::class);
+        }
+
+        return $this->router->matchRequest($request);
     }
 }

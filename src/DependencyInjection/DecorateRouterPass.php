@@ -22,12 +22,10 @@ final class DecorateRouterPass implements CompilerPassInterface
         foreach (array_keys($container->findTaggedServiceIds('router.parameter_resolver')) as $serviceId) {
             $newId = 'iltar.http.parameter_resolving.' . $serviceId;
             $container
-                ->register($newId)
-                ->setClass(LazyParameterResolver::class)
+                ->register($newId, LazyParameterResolver::class)
                 ->addArgument(new Reference('service_container'))
-                ->addArgument($newId . '.inner')
-                ->setPublic(false)
-                ->setDecoratedService($serviceId);
+                ->addArgument($serviceId)
+                ->setPublic(false);
 
             $resolvers[] = new Reference($newId);
         }
@@ -37,8 +35,7 @@ final class DecorateRouterPass implements CompilerPassInterface
         }
 
         $container
-            ->register('iltar.http.parameter_resolving_router')
-            ->setClass(ParameterResolvingRouter::class)
+            ->register('iltar.http.parameter_resolving_router', ParameterResolvingRouter::class)
             ->addArgument(new Reference('iltar.http.parameter_resolving_router.inner'))
             ->addArgument(new Reference('iltar.http.parameter_resolver_collection'))
             ->setPublic(false)
