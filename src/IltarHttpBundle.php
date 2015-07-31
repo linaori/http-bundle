@@ -8,7 +8,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 /**
  * @author Iltar van der Berg <kjarli@gmail.com>
  */
-class IltarHttpBundle extends Bundle
+final class IltarHttpBundle extends Bundle
 {
     /**
      * {@inheritdoc}

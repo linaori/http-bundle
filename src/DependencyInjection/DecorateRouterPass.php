@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\Reference;
 /**
  * @author Iltar van der Berg <kjarli@gmail.com>
  */
-class DecorateRouterPass implements CompilerPassInterface
+final class DecorateRouterPass implements CompilerPassInterface
 {
     /**
      * {@inheritdoc}

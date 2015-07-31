@@ -8,7 +8,7 @@ use Symfony\Component\Routing\RouterInterface;
 /**
  * @author Iltar van der Berg <kjarli@gmail.com>
  */
-class ParameterResolvingRouter implements RouterInterface
+final class ParameterResolvingRouter implements RouterInterface
 {
     /**
      * @var RouterInterface
