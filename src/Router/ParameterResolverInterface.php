@@ -27,7 +27,7 @@ interface ParameterResolverInterface
      *
      * @param string $name   Name of the parameter as defined in the Route
      * @param mixed  $value  Value of the parameter as filled in
-     * @return string
+     * @return string|null   Return null if nothing could be resolved
      */
     public function resolveParameter($name, $value);
 }
