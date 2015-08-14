@@ -10,6 +10,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 class Configuration implements ConfigurationInterface
 {
+
     /**
      * {@inheritdoc}
      */
@@ -18,7 +19,7 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode    = $treeBuilder->root('iltar_http');
 
-        $this->addRouteConfig($rootNode);
+        $this->addRouterConfig($rootNode);
 
         return $treeBuilder;
     }
@@ -28,11 +29,15 @@ class Configuration implements ConfigurationInterface
      *
      * @param ArrayNodeDefinition $rootNode
      */
-    private function addRouteConfig(ArrayNodeDefinition $rootNode)
+    private function addRouterConfig(ArrayNodeDefinition $rootNode)
     {
         $rootNode
             ->children()
-                ->scalarNode('router')->defaultTrue()->end()
+                ->arrayNode('router')
+                    ->canBeDisabled()
+                    ->children()
+                        ->booleanNode('entity_id_resolver')->defaultFalse()->end()
+                    ->end()
             ->end();
     }
 }

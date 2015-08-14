@@ -19,7 +19,7 @@ final class IltarHttpExtension extends Extension
         $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
-        $this->processRouterConfig($config, $loader);
+        $this->processRouterConfig($config['router'], $loader);
     }
 
     /**
@@ -28,10 +28,14 @@ final class IltarHttpExtension extends Extension
      */
     private function processRouterConfig(array $config, XmlFileLoader $loader)
     {
-        if (false === $config['router']) {
+        if (false === $config['enabled']) {
             return;
         }
 
         $loader->load('router.xml');
+
+        if (false !== $config['entity_id_resolver']) {
+            $loader->load('entity_id_resolver.xml');
+        }
     }
 }

@@ -1,10 +1,9 @@
 <?php
 namespace Iltar\HttpBundle\DependencyInjection;
 
-use Iltar\HttpBundle\Router\LazyParameterResolver;
-use Iltar\HttpBundle\Router\ParameterResolvingRouter;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
@@ -24,12 +23,12 @@ final class DecorateRouterPass implements CompilerPassInterface
         $resolvers = [];
 
         foreach (array_keys($container->findTaggedServiceIds('router.parameter_resolver')) as $serviceId) {
-            $newId = 'iltar.http.parameter_resolving.' . $serviceId;
-            $container
-                ->register($newId, LazyParameterResolver::class)
-                ->addArgument(new Reference('service_container'))
-                ->addArgument($serviceId)
-                ->setPublic(false);
+            $newId = 'iltar.http.parameter_resolver.' . $serviceId;
+
+            $container->setDefinition(
+                $newId,
+                (new DefinitionDecorator('iltar.http.parameter_resolver.abstract'))->replaceArgument(1, $serviceId)
+            );
 
             $resolvers[] = new Reference($newId);
         }
@@ -38,13 +37,11 @@ final class DecorateRouterPass implements CompilerPassInterface
             return;
         }
 
-        $container
-            ->register('iltar.http.parameter_resolving_router', ParameterResolvingRouter::class)
-            ->addArgument(new Reference('iltar.http.parameter_resolving_router.inner'))
-            ->addArgument(new Reference('iltar.http.router.parameter_resolver_collection'))
-            ->setPublic(false)
-            ->setDecoratedService('router');
+        $container->setDefinition(
+            'iltar.http.parameter_resolving_router',
+            (new DefinitionDecorator('iltar.http.parameter_resolving_router.abstract'))->setDecoratedService('router')
+        );
 
-        $container->findDefinition('iltar.http.router.parameter_resolver_collection')->setArguments([$resolvers]);
+        $container->findDefinition('iltar.http.router.parameter_resolver_collection')->replaceArgument(0, $resolvers);
     }
 }
