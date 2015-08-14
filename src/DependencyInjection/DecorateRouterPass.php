@@ -17,6 +17,10 @@ final class DecorateRouterPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
+        if (!$container->hasParameter('iltar.http.router.enabled')) {
+            return;
+        }
+
         $resolvers = [];
 
         foreach (array_keys($container->findTaggedServiceIds('router.parameter_resolver')) as $serviceId) {
@@ -37,10 +41,10 @@ final class DecorateRouterPass implements CompilerPassInterface
         $container
             ->register('iltar.http.parameter_resolving_router', ParameterResolvingRouter::class)
             ->addArgument(new Reference('iltar.http.parameter_resolving_router.inner'))
-            ->addArgument(new Reference('iltar.http.parameter_resolver_collection'))
+            ->addArgument(new Reference('iltar.http.router.parameter_resolver_collection'))
             ->setPublic(false)
             ->setDecoratedService('router');
 
-        $container->findDefinition('iltar.http.parameter_resolver_collection')->setArguments([$resolvers]);
+        $container->findDefinition('iltar.http.router.parameter_resolver_collection')->setArguments([$resolvers]);
     }
 }

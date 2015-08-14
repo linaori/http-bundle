@@ -9,13 +9,26 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  */
 class DecorateRouterPassTest extends \PHPUnit_Framework_TestCase
 {
+    public function testProcessNotEnabled()
+    {
+        $container = new ContainerBuilder();
+        $pass      = new DecorateRouterPass();
+
+        $container->setParameter('iltar.http.router.enabled', false);
+
+        $pass->process($container);
+
+        $this->assertFalse($container->has('iltar.http.parameter_resolving_router'));
+    }
+
     public function testProcessNoResolvers()
     {
         $container = new ContainerBuilder();
         $pass      = new DecorateRouterPass();
 
+        $container->setParameter('iltar.http.router.enabled', true);
         $container
-            ->register('iltar.http.parameter_resolver_collection')
+            ->register('iltar.http.router.parameter_resolver_collection')
             ->setClass('stdClass');
 
         $pass->process($container);
@@ -28,8 +41,9 @@ class DecorateRouterPassTest extends \PHPUnit_Framework_TestCase
         $container = new ContainerBuilder();
         $pass      = new DecorateRouterPass();
 
+        $container->setParameter('iltar.http.router.enabled', true);
         $container
-            ->register('iltar.http.parameter_resolver_collection')
+            ->register('iltar.http.router.parameter_resolver_collection')
             ->setClass('stdClass');
 
         $container

@@ -16,6 +16,22 @@ final class IltarHttpExtension extends Extension
      */
     public function load(array $config, ContainerBuilder $container)
     {
-        (new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config')))->load('services.xml');
+        $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+
+        $this->processRouterConfig($config, $loader);
+    }
+
+    /**
+     * @param array         $config
+     * @param XmlFileLoader $loader
+     */
+    private function processRouterConfig(array $config, XmlFileLoader $loader)
+    {
+        if (false === $config['router']) {
+            return;
+        }
+
+        $loader->load('router.xml');
     }
 }
