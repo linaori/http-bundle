@@ -11,6 +11,9 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
  */
 class DecorateRouterPassTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var ContainerBuilder
+     */
     private $container;
 
     protected function setUp()
@@ -47,8 +50,10 @@ class DecorateRouterPassTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->container->has('iltar.http.parameter_resolving_router'));
     }
 
-    public function testProcess()
+    public function testProcessMissingPriorityTag()
     {
+        $this->setExpectedException(\InvalidArgumentException::class);
+
         $pass = new DecorateRouterPass();
 
         $this->container->setParameter('iltar.http.router.enabled', true);
@@ -61,5 +66,40 @@ class DecorateRouterPassTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($this->container->has('iltar.http.parameter_resolving_router'));
         $this->assertTrue($this->container->has('iltar.http.parameter_resolver.app.henk'));
+    }
+
+    public function testProcess()
+    {
+        $pass = new DecorateRouterPass();
+
+        $this->container->setParameter('iltar.http.router.enabled', true);
+        $this->container
+            ->register('app.henk_200')
+            ->setClass('stdClass')
+            ->addTag('router.parameter_resolver', ['priority' => 200]);
+
+        $this->container
+            ->register('app.henk_50')
+            ->setClass('stdClass')
+            ->addTag('router.parameter_resolver', ['priority' => 50]);
+
+        $this->container
+            ->register('app.henk_100')
+            ->setClass('stdClass')
+            ->addTag('router.parameter_resolver', ['priority' => 100]);
+
+        $pass->process($this->container);
+
+        $expectedResolvers = [
+            'iltar.http.parameter_resolver.app.henk_200',
+            'iltar.http.parameter_resolver.app.henk_100',
+            'iltar.http.parameter_resolver.app.henk_50',
+        ];
+
+        $resolvers = $this->container->getDefinition('iltar.http.router.parameter_resolver_collection')->getArgument(0);
+
+        foreach ($expectedResolvers as $i => $resolver) {
+            $this->assertSame($resolver, $resolvers[$i]->__toString());
+        }
     }
 }

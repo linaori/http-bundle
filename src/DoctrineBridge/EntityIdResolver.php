@@ -9,9 +9,9 @@ use Iltar\HttpBundle\Router\ParameterResolverInterface;
 /**
  * A resolver using the ManagerRegistry to call getId if possible.
  *
- * @author Iltar van der Berg <ivanderberg@hostnet.nl>
+ * @author Iltar van der Berg <kjarli@gmail.com>
  */
-class EntityIdResolver implements ParameterResolverInterface
+final class EntityIdResolver implements ParameterResolverInterface
 {
     /**
      * @var array

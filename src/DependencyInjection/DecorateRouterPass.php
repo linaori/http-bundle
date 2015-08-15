@@ -22,7 +22,13 @@ final class DecorateRouterPass implements CompilerPassInterface
 
         $resolvers = [];
 
-        foreach (array_keys($container->findTaggedServiceIds('router.parameter_resolver')) as $serviceId) {
+        foreach ($container->findTaggedServiceIds('router.parameter_resolver') as $serviceId => $tags) {
+            $tag = current($tags);
+            if (!array_key_exists('priority', $tag)) {
+                throw new \InvalidArgumentException(
+                    'The router.parameter_resolver tag requires a priority to be set for ' . $serviceId . '.'
+                );
+            }
             $newId = 'iltar.http.parameter_resolver.' . $serviceId;
 
             $container->setDefinition(
@@ -30,7 +36,10 @@ final class DecorateRouterPass implements CompilerPassInterface
                 (new DefinitionDecorator('iltar.http.parameter_resolver.abstract'))->replaceArgument(1, $serviceId)
             );
 
-            $resolvers[] = new Reference($newId);
+            $resolvers[] = [
+                'priority' => $tag['priority'],
+                'service'  => $newId
+            ];
         }
 
         if (empty($resolvers)) {
@@ -42,6 +51,17 @@ final class DecorateRouterPass implements CompilerPassInterface
             (new DefinitionDecorator('iltar.http.parameter_resolving_router.abstract'))->setDecoratedService('router')
         );
 
-        $container->findDefinition('iltar.http.router.parameter_resolver_collection')->replaceArgument(0, $resolvers);
+        usort($resolvers, function($a, $b) {
+            if ($a['priority'] === $b['priority']) {
+                return 0;
+            }
+
+            return $a['priority'] > $b['priority'] ? -1 : 1;
+        });
+
+        $container->findDefinition('iltar.http.router.parameter_resolver_collection')
+            ->replaceArgument(0, array_map(function (array $resolver) {
+                return new Reference($resolver['service']);
+            }, $resolvers));
     }
 }

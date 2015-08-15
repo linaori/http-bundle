@@ -5,7 +5,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Mapping\MappingException;
 
 /**
- * @author Iltar van der Berg <ivanderberg@hostnet.nl>
+ * @author Iltar van der Berg <kjarli@gmail.com>
  * @covers Iltar\HttpBundle\DoctrineBridge\EntityIdResolver
  */
 class EntityIdResolverTest extends \PHPUnit_Framework_TestCase
