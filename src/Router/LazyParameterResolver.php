@@ -4,7 +4,7 @@ namespace Iltar\HttpBundle\Router;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Decorates the actual
+ * Decorates the actual resolver to minimize performance loss at runtime.
  *
  * @author Iltar van der Berg <kjarli@gmail.com>
  */
