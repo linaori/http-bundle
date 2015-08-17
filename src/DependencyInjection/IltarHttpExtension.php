@@ -64,4 +64,14 @@ final class IltarHttpExtension extends Extension
 
         return $mapped;
     }
+
+    public function getXsdValidationBasePath()
+    {
+        return __DIR__.'/../Resources/config/schema';
+    }
+
+    public function getNamespace()
+    {
+        return 'http://iltar.github.io/schema/dic/http-bundle';
+    }
 }
