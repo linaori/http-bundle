@@ -4,18 +4,18 @@ namespace Iltar\HttpBundle\Router;
 use Iltar\HttpBundle\Exception\UncallableMethodException;
 
 /**
- * @author Iltar van der Berg <ivanderberg@hostnet.nl>
+ * @author Iltar van der Berg <kjarli@gmail.com>
  * @covers Iltar\HttpBundle\Router\MappedGetterResolver
  */
 class MappedGetterResolverTest extends \PHPUnit_Framework_TestCase
 {
     private static $mapping = [
         UserStub::class => [
-            'username' => 'getUsername',
-            null       => 'getId',
+            'username'  => 'getUsername',
+            '_fallback' => 'getId',
         ],
         PostStub::class => [
-            null => 'getSlug',
+            '_fallback' => 'getSlug',
         ],
         ReplyStub::class => [
             'id' => 'getId',
@@ -53,7 +53,7 @@ class MappedGetterResolverTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException(UncallableMethodException::class);
 
-        (new MappedGetterResolver([UserStub::class => [null => 'getSlug']]))
+        (new MappedGetterResolver([UserStub::class => ['_fallback' => 'getSlug']]))
             ->resolveParameter('slug', new UserStub(4200, 'henkje'));
     }
 }

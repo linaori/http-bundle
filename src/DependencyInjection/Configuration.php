@@ -6,7 +6,7 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
- * @author Iltar van der Berg <ivanderberg@hostnet.nl>
+ * @author Iltar van der Berg <kjarli@gmail.com>
  */
 class Configuration implements ConfigurationInterface
 {
@@ -37,7 +37,14 @@ class Configuration implements ConfigurationInterface
                     ->canBeDisabled()
                     ->children()
                         ->booleanNode('entity_id_resolver')->defaultFalse()->end()
+                        ->arrayNode('mapped_getters')
+                            ->requiresAtLeastOneElement()
+                            ->useAttributeAsKey('name')
+                            ->prototype('scalar')->end()
+                            ->end()
+                        ->end()
                     ->end()
+                ->end()
             ->end();
     }
 }

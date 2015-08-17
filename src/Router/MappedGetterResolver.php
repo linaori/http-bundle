@@ -13,10 +13,10 @@ use Iltar\HttpBundle\Exception\UncallableMethodException;
  *
  * Arguments are passed via the constructor in an array: [
  *    ['App\User' => [
- *      'username' => 'getUsername',
- *       null      => 'getId',
+ *      'username'   => 'getUsername',
+ *       '_fallback' => 'getId',
  *    ],
- *    ['App\Post' => [null, 'getSlug']],
+ *    'App\Post' => ['_fallback' => 'getSlug'],
  *  ]
  *
  * @author Iltar van der Berg <kjarli@gmail.com>
@@ -44,7 +44,7 @@ class MappedGetterResolver implements ParameterResolverInterface
     public function supportsParameter($name, $entity)
     {
         $part = $this->mapping[get_class($entity)];
-        return isset($part[$name]) || isset($part[null]);
+        return isset($part[$name]) || isset($part['_fallback']);
     }
 
     /**
@@ -53,7 +53,7 @@ class MappedGetterResolver implements ParameterResolverInterface
     public function resolveParameter($name, $entity)
     {
         $part     = $this->mapping[get_class($entity)];
-        $method   = isset($part[$name]) ? $part[$name] : $part[null];
+        $method   = isset($part[$name]) ? $part[$name] : $part['_fallback'];
         $callable = [$entity, $method];
 
         if (!is_callable($callable)) {

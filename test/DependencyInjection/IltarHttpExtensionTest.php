@@ -21,6 +21,43 @@ class IltarHttpExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($container->hasParameter('iltar.http.router.entity_id_resolver.enabled'));
     }
 
+    public function testLoadMappedResolvers()
+    {
+        $ext       = new IltarHttpExtension();
+        $container = new ContainerBuilder();
+        $ext->load([
+            'iltar_http' => [
+                'router' => [
+                    'mapped_getters' => [
+                        'App\Post'          => 'getSlug',
+                        'App\User'          => 'getId',
+                        'App\User.username' => 'getUsername',
+                        'App\Reply.id'      => 'getId',
+                        'App\Message.re.id' => 'getId',
+                    ]
+                ]
+            ]
+        ], $container);
+
+        $expected = [
+            'App\Post' => [
+                '_fallback' => 'getSlug',
+            ],
+            'App\User' => [
+                '_fallback' => 'getId',
+                'username'  => 'getUsername',
+            ],
+            'App\Reply' => [
+                'id' => 'getId',
+            ],
+            'App\Message' => [
+                're.id' => 'getId',
+            ],
+        ];
+
+        $this->assertSame($expected, $container->getDefinition('iltar.http.router.mapped_getters')->getArgument(0));
+    }
+
     public function testLoadWithEntityIdResolver()
     {
         $ext       = new IltarHttpExtension();
