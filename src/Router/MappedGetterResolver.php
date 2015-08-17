@@ -8,7 +8,7 @@ use Iltar\HttpBundle\Exception\UncallableMethodException;
  *
  * Example:
  *  - App\User.username : getUsername # grab the username if the key is username
- *  - App\User          : getid       # Grab getId if nothing more specific is defined
+ *  - App\User          : getId       # Grab getId if nothing more specific is defined
  *  - App\Post          : getSlug     # Always grab getSlug
  *
  * Arguments are passed via the constructor in an array: [
