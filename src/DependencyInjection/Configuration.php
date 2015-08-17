@@ -36,20 +36,21 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('router')
                     ->info('Configures the ParameterResolvingRouter')
                     ->canBeDisabled()
+                    ->fixXmlConfig('mapped_getter')
                     ->children()
                         ->booleanNode('entity_id_resolver')
                             ->info('Enable or disable the EntityIdResolver')
                             ->defaultFalse()
-                        ->end()
+                        ->end() // entity_id_resolver
                         ->arrayNode('mapped_getters')
                             ->info('Example: `App\User.username: getUsername`')
                             ->requiresAtLeastOneElement()
+                            ->normalizeKeys(false)
                             ->useAttributeAsKey('name')
                             ->prototype('scalar')->end()
-                            ->end()
-                        ->end()
+                        ->end() // mapped_getters
                     ->end()
-                ->end()
+                ->end() // router
             ->end();
     }
 }

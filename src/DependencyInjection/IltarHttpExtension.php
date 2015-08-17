@@ -29,7 +29,7 @@ final class IltarHttpExtension extends Extension
      */
     private function processRouterConfig(array $config, ContainerBuilder $container, XmlFileLoader $loader)
     {
-        if (false === $config['enabled']) {
+        if (!$this->isConfigEnabled($container, $config)) {
             return;
         }
 
@@ -44,7 +44,7 @@ final class IltarHttpExtension extends Extension
 
             $mapping = $this->convertMappedGetters($config['mapped_getters']);
 
-            $container->getDefinition('iltar.http.router.mapped_getters')->replaceArgument(0, $mapping);
+            $container->getDefinition('iltar_http.router.mapped_getters')->replaceArgument(0, $mapping);
         }
     }
 
@@ -63,5 +63,15 @@ final class IltarHttpExtension extends Extension
         }
 
         return $mapped;
+    }
+
+    public function getXsdValidationBasePath()
+    {
+        return __DIR__.'/../Resources/config/schema';
+    }
+
+    public function getNamespace()
+    {
+        return 'http://iltar.github.io/schema/dic/http-bundle';
     }
 }

@@ -16,9 +16,9 @@ class IltarHttpExtensionTest extends \PHPUnit_Framework_TestCase
         $container = new ContainerBuilder();
         $ext->load([], $container);
 
-        $this->assertTrue($container->has('iltar.http.router.parameter_resolver_collection'));
-        $this->assertTrue($container->hasParameter('iltar.http.router.enabled'));
-        $this->assertFalse($container->hasParameter('iltar.http.router.entity_id_resolver.enabled'));
+        $this->assertTrue($container->has('iltar_http.router.parameter_resolver_collection'));
+        $this->assertTrue($container->hasParameter('iltar_http.router.enabled'));
+        $this->assertFalse($container->hasParameter('iltar_http.router.entity_id_resolver.enabled'));
     }
 
     public function testLoadMappedResolvers()
@@ -55,7 +55,7 @@ class IltarHttpExtensionTest extends \PHPUnit_Framework_TestCase
             ],
         ];
 
-        $this->assertSame($expected, $container->getDefinition('iltar.http.router.mapped_getters')->getArgument(0));
+        $this->assertSame($expected, $container->getDefinition('iltar_http.router.mapped_getters')->getArgument(0));
     }
 
     public function testLoadWithEntityIdResolver()
@@ -64,9 +64,9 @@ class IltarHttpExtensionTest extends \PHPUnit_Framework_TestCase
         $container = new ContainerBuilder();
         $ext->load(['iltar_http' => ['router' => ['entity_id_resolver' => true]]], $container);
 
-        $this->assertTrue($container->hasParameter('iltar.http.router.enabled'));
-        $this->assertTrue($container->hasParameter('iltar.http.router.entity_id_resolver.enabled'));
-        $this->assertTrue($container->has('iltar.http.router.entity_id_resolver'));
+        $this->assertTrue($container->hasParameter('iltar_http.router.enabled'));
+        $this->assertTrue($container->hasParameter('iltar_http.router.entity_id_resolver.enabled'));
+        $this->assertTrue($container->has('iltar_http.router.entity_id_resolver'));
     }
 
     public function testLoadNoRouter()
@@ -75,7 +75,7 @@ class IltarHttpExtensionTest extends \PHPUnit_Framework_TestCase
         $container = new ContainerBuilder();
         $ext->load(['iltar_http' => ['router' => ['enabled' => false]]], $container);
 
-        $this->assertFalse($container->has('iltar.http.router.parameter_resolver_collection'));
-        $this->assertFalse($container->hasParameter('iltar.http.router.enabled'));
+        $this->assertFalse($container->has('iltar_http.router.parameter_resolver_collection'));
+        $this->assertFalse($container->hasParameter('iltar_http.router.enabled'));
     }
 }

@@ -4,22 +4,22 @@
            xsi:schemaLocation= "http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd"
         >
     <parameters>
-        <parameter key="iltar.http.router.enabled">true</parameter>
+        <parameter key="iltar_http.router.enabled">true</parameter>
     </parameters>
     <services>
 
-        <service id="iltar.http.router.parameter_resolver_collection" class="Iltar\HttpBundle\Router\ResolverCollection">
+        <service id="iltar_http.router.parameter_resolver_collection" class="Iltar\HttpBundle\Router\ResolverCollection" public="false">
             <argument />
         </service>
 
-        <service abstract="true" id="iltar.http.parameter_resolver.abstract" class="Iltar\HttpBundle\Router\LazyParameterResolver">
+        <service abstract="true" id="iltar_http.parameter_resolver.abstract" class="Iltar\HttpBundle\Router\LazyParameterResolver">
             <argument type="service" id="service_container" />
             <argument />
         </service>
 
-        <service abstract="true" public="false" id="iltar.http.parameter_resolving_router.abstract" class="Iltar\HttpBundle\Router\ParameterResolvingRouter">
-            <argument type="service" id="iltar.http.parameter_resolving_router.inner" />
-            <argument type="service" id="iltar.http.router.parameter_resolver_collection" />
+        <service abstract="true" public="false" id="iltar_http.parameter_resolving_router.abstract" class="Iltar\HttpBundle\Router\ParameterResolvingRouter">
+            <argument type="service" id="iltar_http.parameter_resolving_router.inner" />
+            <argument type="service" id="iltar_http.router.parameter_resolver_collection" />
         </service>
 
     </services>
