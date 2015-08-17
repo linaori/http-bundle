@@ -6,17 +6,12 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 /**
  * Resolves anything that's mapped.
  *
- * Example:
- *  - App\User.username : getUsername # grab the username if the key is username
- *  - App\User          : getId       # Grab getId if nothing more specific is defined
- *  - App\Post          : getSlug     # Always grab getSlug
- *
  * Arguments are passed via the constructor in an array: [
- *    ['App\User' => [
- *      'username'   => 'getUsername',
- *       '_fallback' => 'getId',
- *    ],
- *    'App\Post' => ['_fallback' => 'getSlug'],
+ *    'App\User' => [
+ *      'username'   => 'username',
+ *       '_fallback' => 'id',
+ *    ,
+ *    'App\Post' => ['_fallback' => 'slug'],
  *  ]
  *
  * @author Iltar van der Berg <kjarli@gmail.com>
