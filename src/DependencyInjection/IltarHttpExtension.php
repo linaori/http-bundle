@@ -29,7 +29,7 @@ final class IltarHttpExtension extends Extension
      */
     private function processRouterConfig(array $config, ContainerBuilder $container, XmlFileLoader $loader)
     {
-        if (false === $config['enabled']) {
+        if (!$this->isConfigEnabled($config)) {
             return;
         }
 
