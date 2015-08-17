@@ -7,7 +7,7 @@
         <parameter key="iltar.http.router.entity_id_resolver.enabled">true</parameter>
     </parameters>
     <services>
-        <service id="iltar.http.router.entity_id_resolver" class="Iltar\HttpBundle\DoctrineBridge\EntityIdResolver">
+        <service id="iltar.http.router.entity_id_resolver" class="Iltar\HttpBundle\DoctrineBridge\Router\EntityIdResolver">
             <argument type="service" id="doctrine" />
             <tag name="router.parameter_resolver" priority="100" />
         </service>

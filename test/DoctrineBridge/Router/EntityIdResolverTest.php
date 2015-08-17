@@ -1,5 +1,5 @@
 <?php
-namespace Iltar\HttpBundle\DoctrineBridge;
+namespace Iltar\HttpBundle\DoctrineBridge\Router;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Mapping\MappingException;
