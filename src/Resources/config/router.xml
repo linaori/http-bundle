@@ -8,7 +8,7 @@
     </parameters>
     <services>
 
-        <service id="iltar.http.router.parameter_resolver_collection" class="Iltar\HttpBundle\Router\ResolverCollection">
+        <service id="iltar.http.router.parameter_resolver_collection" class="Iltar\HttpBundle\Router\ResolverCollection" public="false">
             <argument />
         </service>
 
