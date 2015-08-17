@@ -44,7 +44,7 @@ final class IltarHttpExtension extends Extension
 
             $mapping = $this->convertMappedGetters($config['mapped_getters']);
 
-            $container->getDefinition('iltar.http.router.mapped_getters')->replaceArgument(0, $mapping);
+            $container->getDefinition('iltar_http.router.mapped_getters')->replaceArgument(0, $mapping);
         }
     }
 

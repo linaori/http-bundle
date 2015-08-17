@@ -16,7 +16,7 @@ final class DecorateRouterPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasParameter('iltar.http.router.enabled')) {
+        if (!$container->hasParameter('iltar_http.router.enabled')) {
             return;
         }
 
@@ -29,11 +29,11 @@ final class DecorateRouterPass implements CompilerPassInterface
                     'The router.parameter_resolver tag requires a priority to be set for ' . $serviceId . '.'
                 );
             }
-            $newId = 'iltar.http.parameter_resolver.' . $serviceId;
+            $newId = 'iltar_http.parameter_resolver.' . $serviceId;
 
             $container->setDefinition(
                 $newId,
-                (new DefinitionDecorator('iltar.http.parameter_resolver.abstract'))->replaceArgument(1, $serviceId)
+                (new DefinitionDecorator('iltar_http.parameter_resolver.abstract'))->replaceArgument(1, $serviceId)
             );
 
             $resolvers[] = [
@@ -47,8 +47,8 @@ final class DecorateRouterPass implements CompilerPassInterface
         }
 
         $container->setDefinition(
-            'iltar.http.parameter_resolving_router',
-            (new DefinitionDecorator('iltar.http.parameter_resolving_router.abstract'))->setDecoratedService('router')
+            'iltar_http.parameter_resolving_router',
+            (new DefinitionDecorator('iltar_http.parameter_resolving_router.abstract'))->setDecoratedService('router')
         );
 
         usort($resolvers, function ($a, $b) {
@@ -59,7 +59,7 @@ final class DecorateRouterPass implements CompilerPassInterface
             return $a['priority'] > $b['priority'] ? -1 : 1;
         });
 
-        $container->findDefinition('iltar.http.router.parameter_resolver_collection')
+        $container->findDefinition('iltar_http.router.parameter_resolver_collection')
             ->replaceArgument(0, array_map(function (array $resolver) {
                 return new Reference($resolver['service']);
             }, $resolvers));
