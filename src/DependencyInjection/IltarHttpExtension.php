@@ -44,7 +44,7 @@ final class IltarHttpExtension extends Extension
 
             $mapping = $this->convertMappedGetters($config['mapped_getters']);
 
-            $container->getDefinition('iltar_http.router.mapped_getters')->replaceArgument(0, $mapping);
+            $container->getDefinition('iltar_http.router.mapped_getters')->replaceArgument(1, $mapping);
         }
     }
 
@@ -65,11 +65,17 @@ final class IltarHttpExtension extends Extension
         return $mapped;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getXsdValidationBasePath()
     {
         return __DIR__.'/../Resources/config/schema';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getNamespace()
     {
         return 'http://iltar.github.io/schema/dic/http-bundle';

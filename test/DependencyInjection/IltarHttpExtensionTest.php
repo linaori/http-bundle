@@ -29,11 +29,11 @@ class IltarHttpExtensionTest extends \PHPUnit_Framework_TestCase
             'iltar_http' => [
                 'router' => [
                     'mapped_getters' => [
-                        'App\Post'          => 'getSlug',
-                        'App\User'          => 'getId',
-                        'App\User.username' => 'getUsername',
-                        'App\Reply.id'      => 'getId',
-                        'App\Message.re.id' => 'getId',
+                        'App\Post'          => 'slug',
+                        'App\User'          => 'id',
+                        'App\User.username' => 'username',
+                        'App\Reply.id'      => 'id',
+                        'App\Message.re.id' => 'id',
                     ]
                 ]
             ]
@@ -41,21 +41,21 @@ class IltarHttpExtensionTest extends \PHPUnit_Framework_TestCase
 
         $expected = [
             'App\Post' => [
-                '_fallback' => 'getSlug',
+                '_fallback' => 'slug',
             ],
             'App\User' => [
-                '_fallback' => 'getId',
-                'username'  => 'getUsername',
+                '_fallback' => 'id',
+                'username'  => 'username',
             ],
             'App\Reply' => [
-                'id' => 'getId',
+                'id' => 'id',
             ],
             'App\Message' => [
-                're.id' => 'getId',
+                're.id' => 'id',
             ],
         ];
 
-        $this->assertSame($expected, $container->getDefinition('iltar_http.router.mapped_getters')->getArgument(0));
+        $this->assertSame($expected, $container->getDefinition('iltar_http.router.mapped_getters')->getArgument(1));
     }
 
     public function testLoadWithEntityIdResolver()

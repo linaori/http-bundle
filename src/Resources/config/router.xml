@@ -17,7 +17,7 @@
             <argument />
         </service>
 
-        <service abstract="true" public="false" id="iltar_http.parameter_resolving_router.abstract" class="Iltar\HttpBundle\Router\ParameterResolvingRouter">
+        <service abstract="true" decorates="router" public="false" id="iltar_http.parameter_resolving_router.abstract" class="Iltar\HttpBundle\Router\ParameterResolvingRouter">
             <argument type="service" id="iltar_http.parameter_resolving_router.inner" />
             <argument type="service" id="iltar_http.router.parameter_resolver_collection" />
         </service>

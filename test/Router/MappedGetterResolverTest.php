@@ -1,7 +1,8 @@
 <?php
 namespace Iltar\HttpBundle\Router;
 
-use Iltar\HttpBundle\Exception\UncallableMethodException;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 /**
  * @author Iltar van der Berg <kjarli@gmail.com>
@@ -11,20 +12,22 @@ class MappedGetterResolverTest extends \PHPUnit_Framework_TestCase
 {
     private static $mapping = [
         UserStub::class => [
-            'username'  => 'getUsername',
-            '_fallback' => 'getId',
+            'username'  => 'username',
+            '_fallback' => 'id',
         ],
         PostStub::class => [
-            '_fallback' => 'getSlug',
+            '_fallback' => 'slug',
         ],
         ReplyStub::class => [
-            'id' => 'getId',
+            'id'   => 'id',
+            'slug' => 'post.slug',
         ],
     ];
 
     public function testSupports()
     {
-        $resolver = new MappedGetterResolver(self::$mapping);
+        $propertyAccessor = $this->prophesize(PropertyAccessor::class);
+        $resolver = new MappedGetterResolver($propertyAccessor->reveal(), self::$mapping);
 
         $this->assertTrue($resolver->supportsParameter('henk', new UserStub(410, 'henkje')));
         $this->assertTrue($resolver->supportsParameter('username', new UserStub(410, 'henkje')));
@@ -32,13 +35,14 @@ class MappedGetterResolverTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($resolver->supportsParameter('jan', new PostStub('henks-post')));
         $this->assertTrue($resolver->supportsParameter('id', new PostStub('henks-post')));
 
-        $this->assertTrue($resolver->supportsParameter('id', new ReplyStub(420)));
-        $this->assertFalse($resolver->supportsParameter('henk', new ReplyStub(420)));
+        $this->assertTrue($resolver->supportsParameter('id', new ReplyStub(420, new PostStub('slug'))));
+        $this->assertFalse($resolver->supportsParameter('henk', new ReplyStub(420, new PostStub('slug'))));
     }
 
     public function testResolve()
     {
-        $resolver = new MappedGetterResolver(self::$mapping);
+        $propertyAccessor = PropertyAccess::createPropertyAccessor();
+        $resolver         = new MappedGetterResolver($propertyAccessor, self::$mapping);
 
         $this->assertSame('420', $resolver->resolveParameter('fake key', new UserStub(420, 'janalleman')));
         $this->assertSame('henk', $resolver->resolveParameter('username', new UserStub(50, 'henk')));
@@ -46,15 +50,8 @@ class MappedGetterResolverTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('henks-slug', $resolver->resolveParameter('any key', new PostStub('henks-slug')));
         $this->assertSame('henks-slug', $resolver->resolveParameter('id', new PostStub('henks-slug')));
 
-        $this->assertSame('420', $resolver->resolveParameter('id', new ReplyStub('420')));
-    }
-
-    public function testResolveUncallable()
-    {
-        $this->setExpectedException(UncallableMethodException::class);
-
-        (new MappedGetterResolver([UserStub::class => ['_fallback' => 'getSlug']]))
-            ->resolveParameter('slug', new UserStub(4200, 'henkje'));
+        $this->assertSame('420', $resolver->resolveParameter('id', new ReplyStub(420, new PostStub('slug2'))));
+        $this->assertSame('a-slug', $resolver->resolveParameter('slug', new ReplyStub(420, new PostStub('a-slug'))));
     }
 }
 
@@ -96,13 +93,20 @@ class PostStub
 class ReplyStub
 {
     private $id;
-    public function __construct($id)
+    private $post;
+    public function __construct($id, PostStub $post)
     {
-        $this->id = $id;
+        $this->id   = $id;
+        $this->post = $post;
     }
 
     public function getId()
     {
         return $this->id;
+    }
+
+    public function getPost()
+    {
+        return $this->post;
     }
 }

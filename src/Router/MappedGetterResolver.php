@@ -1,7 +1,7 @@
 <?php
 namespace Iltar\HttpBundle\Router;
 
-use Iltar\HttpBundle\Exception\UncallableMethodException;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 /**
  * Resolves anything that's mapped.
@@ -24,16 +24,23 @@ use Iltar\HttpBundle\Exception\UncallableMethodException;
 class MappedGetterResolver implements ParameterResolverInterface
 {
     /**
+     * @var PropertyAccessor
+     */
+    private $propertyAccessor;
+
+    /**
      * @var array
      */
     private $mapping;
 
     /**
-     * @param array $mapping
+     * @param PropertyAccessor $propertyAccessor
+     * @param array            $mapping
      */
-    public function __construct(array $mapping)
+    public function __construct(PropertyAccessor $propertyAccessor, array $mapping)
     {
-        $this->mapping = $mapping;
+        $this->propertyAccessor = $propertyAccessor;
+        $this->mapping          = $mapping;
     }
 
     /**
@@ -52,16 +59,9 @@ class MappedGetterResolver implements ParameterResolverInterface
      */
     public function resolveParameter($name, $entity)
     {
-        $part     = $this->mapping[get_class($entity)];
-        $method   = isset($part[$name]) ? $part[$name] : $part['_fallback'];
-        $callable = [$entity, $method];
+        $part = $this->mapping[get_class($entity)];
+        $path = isset($part[$name]) ? $part[$name] : $part['_fallback'];
 
-        if (!is_callable($callable)) {
-            throw new UncallableMethodException(
-                sprintf('Method %s::%s is expected to be callable for %s.', get_class($entity), $method, self::class)
-            );
-        }
-
-        return (string) $callable();
+        return (string) $this->propertyAccessor->getValue($entity, $path);
     }
 }

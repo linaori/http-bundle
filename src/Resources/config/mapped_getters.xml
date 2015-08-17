@@ -8,6 +8,7 @@
     </parameters>
     <services>
         <service id="iltar_http.router.mapped_getters" class="Iltar\HttpBundle\DoctrineBridge\Router\MappedGetterResolver">
+            <argument type="service" id="property_access" />
             <argument />
             <tag name="router.parameter_resolver" priority="200" />
         </service>

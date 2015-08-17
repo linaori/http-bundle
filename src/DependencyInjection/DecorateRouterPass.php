@@ -48,7 +48,7 @@ final class DecorateRouterPass implements CompilerPassInterface
 
         $container->setDefinition(
             'iltar_http.parameter_resolving_router',
-            (new DefinitionDecorator('iltar_http.parameter_resolving_router.abstract'))->setDecoratedService('router')
+            new DefinitionDecorator('iltar_http.parameter_resolving_router.abstract')
         );
 
         usort($resolvers, function ($a, $b) {
