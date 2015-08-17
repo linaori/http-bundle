@@ -4,6 +4,7 @@ namespace Iltar\HttpBundle\DoctrineBridge;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Mapping\MappingException;
+use Iltar\HttpBundle\Exception\UncallableMethodException;
 use Iltar\HttpBundle\Router\ParameterResolverInterface;
 
 /**

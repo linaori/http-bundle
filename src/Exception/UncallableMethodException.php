@@ -1,5 +1,5 @@
 <?php
-namespace Iltar\HttpBundle\DoctrineBridge;
+namespace Iltar\HttpBundle\Exception;
 
 /**
  * @author Iltar van der Berg <kjarli@gmail.com>

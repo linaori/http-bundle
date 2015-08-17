@@ -34,7 +34,7 @@ class EntityIdResolverTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Iltar\HttpBundle\DoctrineBridge\UncallableMethodException
+     * @expectedException \Iltar\HttpBundle\Exception\UncallableMethodException
      */
     public function testEntityWithoutId()
     {
