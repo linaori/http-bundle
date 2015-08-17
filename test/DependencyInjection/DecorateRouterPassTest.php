@@ -33,21 +33,21 @@ class DecorateRouterPassTest extends \PHPUnit_Framework_TestCase
             ->addTag('router.parameter_resolver');
 
         $pass->process($container);
-        $this->assertFalse($container->has('iltar.http.parameter_resolving_router'));
+        $this->assertFalse($container->has('iltar_http.parameter_resolving_router'));
     }
 
     public function testProcessNoResolvers()
     {
         $pass = new DecorateRouterPass();
 
-        $this->container->setParameter('iltar.http.router.enabled', true);
+        $this->container->setParameter('iltar_http.router.enabled', true);
         $this->container
-            ->register('iltar.http.router.parameter_resolver_collection')
+            ->register('iltar_http.router.parameter_resolver_collection')
             ->setClass('stdClass');
 
         $pass->process($this->container);
 
-        $this->assertFalse($this->container->has('iltar.http.parameter_resolving_router'));
+        $this->assertFalse($this->container->has('iltar_http.parameter_resolving_router'));
     }
 
     public function testProcessMissingPriorityTag()
@@ -56,7 +56,7 @@ class DecorateRouterPassTest extends \PHPUnit_Framework_TestCase
 
         $pass = new DecorateRouterPass();
 
-        $this->container->setParameter('iltar.http.router.enabled', true);
+        $this->container->setParameter('iltar_http.router.enabled', true);
         $this->container
             ->register('app.henk')
             ->setClass('stdClass')
@@ -64,15 +64,15 @@ class DecorateRouterPassTest extends \PHPUnit_Framework_TestCase
 
         $pass->process($this->container);
 
-        $this->assertTrue($this->container->has('iltar.http.parameter_resolving_router'));
-        $this->assertTrue($this->container->has('iltar.http.parameter_resolver.app.henk'));
+        $this->assertTrue($this->container->has('iltar_http.parameter_resolving_router'));
+        $this->assertTrue($this->container->has('iltar_http.parameter_resolver.app.henk'));
     }
 
     public function testProcess()
     {
         $pass = new DecorateRouterPass();
 
-        $this->container->setParameter('iltar.http.router.enabled', true);
+        $this->container->setParameter('iltar_http.router.enabled', true);
         $this->container
             ->register('app.henk_200')
             ->setClass('stdClass')
@@ -91,12 +91,12 @@ class DecorateRouterPassTest extends \PHPUnit_Framework_TestCase
         $pass->process($this->container);
 
         $expectedResolvers = [
-            'iltar.http.parameter_resolver.app.henk_200',
-            'iltar.http.parameter_resolver.app.henk_100',
-            'iltar.http.parameter_resolver.app.henk_50',
+            'iltar_http.parameter_resolver.app.henk_200',
+            'iltar_http.parameter_resolver.app.henk_100',
+            'iltar_http.parameter_resolver.app.henk_50',
         ];
 
-        $resolvers = $this->container->getDefinition('iltar.http.router.parameter_resolver_collection')->getArgument(0);
+        $resolvers = $this->container->getDefinition('iltar_http.router.parameter_resolver_collection')->getArgument(0);
 
         foreach ($expectedResolvers as $i => $resolver) {
             $this->assertSame($resolver, $resolvers[$i]->__toString());
