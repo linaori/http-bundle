@@ -110,3 +110,23 @@ rest of the keys will be ignored. With the above example this means that the
 
 > Note that the [Property Accessor](http://symfony.com/doc/current/components/property_access/introduction.html)
 component from symfony is used to get the values.
+
+#### Default behavior
+
+When no configuration is defined for a specific object, it will try to resolve
+the property as defined in the name. The default behavior would be:
+
+```yml
+iltar_http:
+    router:
+        mapped_getters:
+            App\User.username: username # this would also happen if nothing is defined
+```
+
+```php
+$router->generate('app.view-user', ['username' => $user]); // calls the config variant
+$router->generate('app.view-user', ['id' => $user]);       // no config, does user.id
+```
+
+> Note that defining a wildcard: `App\User: id` would override the default behavior
+and ignore the default configuration.
