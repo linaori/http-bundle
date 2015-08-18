@@ -35,9 +35,9 @@ final class IltarHttpExtension extends Extension
 
         $loader->load('router.xml');
 
-        $mapping = $this->convertMappedGetters($config['mapped_getters']);
+        $mapping = $this->convertMappedGetters($config['mapped_properties']);
 
-        $container->getDefinition('iltar_http.router.mapped_getters')->replaceArgument(1, $mapping);
+        $container->getDefinition('iltar_http.router.mapped_properties')->replaceArgument(1, $mapping);
 
         if (false !== $config['entity_id_resolver']) {
             $loader->load('entity_id_resolver.xml');

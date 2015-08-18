@@ -15,7 +15,7 @@
 
     <xsd:complexType name="router">
         <xsd:sequence>
-            <xsd:element name="mapped-getter" type="mapped_getter" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="mapped-property" type="mapped_property" minOccurs="0" maxOccurs="unbounded"/>
         </xsd:sequence>
 
         <xsd:attribute name="entity-id-resolver" type="xsd:boolean"/>

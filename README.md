@@ -89,7 +89,7 @@ getters to a method and is registered with a priority of 200.
 iltar_http:
     router:
         entity_id_resolver: true # defaults to false. Converts any known entity to an id (string) getId()
-        mapped_getters:
+        mapped_properties:
             App\User.username   : username      # grab the username if the key is username
             App\User            : id            # Grab getId if nothing more specific is defined
             App\Post            : slug          # Always grab slug
@@ -119,7 +119,7 @@ the property as defined in the name. The default behavior would be:
 ```yml
 iltar_http:
     router:
-        mapped_getters:
+        mapped_properties:
             App\User.username: username # would also happen if nothing is defined
 ```
 

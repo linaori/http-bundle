@@ -97,7 +97,7 @@ class DecorateRouterPassTest extends \PHPUnit_Framework_TestCase
         $pass->process($this->container);
 
         $expectedResolvers = [
-            'iltar_http.router.mapped_getters',
+            'iltar_http.router.mapped_properties',
             'app.henk_150',
             'app.henk_100',
             'app.henk2_50',

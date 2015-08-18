@@ -28,7 +28,7 @@ class IltarHttpExtensionTest extends \PHPUnit_Framework_TestCase
         $ext->load([
             'iltar_http' => [
                 'router' => [
-                    'mapped_getters' => [
+                    'mapped_properties' => [
                         'App\Post'          => 'slug',
                         'App\User'          => 'id',
                         'App\User.username' => 'username',
@@ -55,7 +55,7 @@ class IltarHttpExtensionTest extends \PHPUnit_Framework_TestCase
             ],
         ];
 
-        $this->assertSame($expected, $container->getDefinition('iltar_http.router.mapped_getters')->getArgument(1));
+        $this->assertSame($expected, $container->getDefinition('iltar_http.router.mapped_properties')->getArgument(1));
     }
 
     public function testLoadWithEntityIdResolver()
