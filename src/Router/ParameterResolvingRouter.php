@@ -78,7 +78,7 @@ final class ParameterResolvingRouter implements RouterInterface, RequestMatcherI
     public function matchRequest(Request $request)
     {
         if (!$this->router instanceof RequestMatcherInterface) {
-            throw new \BadMethodCallException('Router has to implement the ' . RequestMatcherInterface::class);
+            throw new \BadMethodCallException('Router has to implement the '.RequestMatcherInterface::class);
         }
 
         return $this->router->matchRequest($request);

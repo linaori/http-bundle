@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping\MappingException;
 
 /**
  * @author Iltar van der Berg <kjarli@gmail.com>
- * @covers Iltar\HttpBundle\DoctrineBridge\EntityIdResolver
+ * @covers Iltar\HttpBundle\DoctrineBridge\Router\EntityIdResolver
  */
 class EntityIdResolverTest extends \PHPUnit_Framework_TestCase
 {

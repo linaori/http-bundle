@@ -81,7 +81,7 @@ services:
 ### Configuration Example
 
 To cover most cases, two default resolvers are available; the `EntityIdresolver`
-and `MappedGetterResolver`. The first converts every entity into an id using
+and `MappablePropertyPathResolver`. The first converts every entity into an id using
 `getId` and is registered with a priority of 100. The latter allows you to map
 getters to a method and is registered with a priority of 200.
 
@@ -89,20 +89,44 @@ getters to a method and is registered with a priority of 200.
 iltar_http:
     router:
         entity_id_resolver: true # defaults to false. Converts any known entity to an id (string) getId()
-        mapped_getters:
-            App\User.username : getUsername # grab the username if the key is username
-            App\User          : getId       # Grab getId if nothing more specific is defined
-            App\Post          : getSlug     # Always grab getSlug
-            App\Reply.id      : getId       # Always grab the ID when the key is 'id'
-            App\Reply         : getSlug     # otherwise grab the slug
-            App\Message.slug  : getSlug     # only grab getSlug if the key is 'slug'
+        mapped_properties:
+            App\User.username   : username      # grab the username if the key is username
+            App\User            : id            # Grab getId if nothing more specific is defined
+            App\Post            : slug          # Always grab slug
+            App\Reply.id        : id            # Always grab the ID when the key is 'id'
+            App\Reply           : slug          # otherwise grab the slug
+            App\Message.slug    : slug          # only grab the slug if the key is 'slug'
+            App\Client.username : user.username # grab the username of the user property in client
 ```
 
 In the above example you can see that `App\User` is registered with a wildcard
-on `getId`. That means that if no other -more specific- key is registered, it
+on `id`. That means that if no other -more specific- key is registered, it
 will call that method. You can also see that `App\User.username` is defined.
 This indicates that if the key is `username`, it will be used instead of the
-wildcard. Note that wildcards are always considered less imporant than the
+wildcard. Note that wildcards are always considered less important than the
 variants with a key. You can also register only a specific key, that means the
 rest of the keys will be ignored. With the above example this means that the
 `EntityIdResolver` will pick it up if it's an entity.
+
+> Note that the [Property Accessor](http://symfony.com/doc/current/components/property_access/introduction.html)
+component from symfony is used to get the values.
+
+#### Default behavior
+
+When no configuration is defined for a specific object, it will try to resolve
+the property as defined in the name. The default behavior would be:
+
+```yml
+iltar_http:
+    router:
+        mapped_properties:
+            App\User.username: username # would also happen if nothing is defined
+```
+
+```php
+$router->generate('app.view-user', ['username' => $user]); // the config variant
+$router->generate('app.view-user', ['id' => $user]);       // no config, does user.id
+```
+
+> Note that defining a wildcard: `App\User: id` would override the default behavior
+and ignore the default configuration.

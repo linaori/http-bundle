@@ -24,7 +24,7 @@ class ResolverCollectionTest extends \PHPUnit_Framework_TestCase
                 new CallableResolver(function ($key) {
                     return $key === 'user';
                 }, function ($key, $value) {
-                    return $value . '-user';
+                    return $value.'-user';
                 })
             ],
             [
