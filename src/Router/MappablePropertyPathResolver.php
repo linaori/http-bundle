@@ -21,7 +21,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
  *
  * @author Iltar van der Berg <kjarli@gmail.com>
  */
-class MappedGetterResolver implements ParameterResolverInterface
+class MappablePropertyPathResolver implements ParameterResolverInterface
 {
     /**
      * @var PropertyAccessor

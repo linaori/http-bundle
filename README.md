@@ -81,7 +81,7 @@ services:
 ### Configuration Example
 
 To cover most cases, two default resolvers are available; the `EntityIdresolver`
-and `MappedGetterResolver`. The first converts every entity into an id using
+and `MappablePropertyPathResolver`. The first converts every entity into an id using
 `getId` and is registered with a priority of 100. The latter allows you to map
 getters to a method and is registered with a priority of 200.
 
@@ -120,11 +120,11 @@ the property as defined in the name. The default behavior would be:
 iltar_http:
     router:
         mapped_getters:
-            App\User.username: username # this would also happen if nothing is defined
+            App\User.username: username # would also happen if nothing is defined
 ```
 
 ```php
-$router->generate('app.view-user', ['username' => $user]); // calls the config variant
+$router->generate('app.view-user', ['username' => $user]); // the config variant
 $router->generate('app.view-user', ['id' => $user]);       // no config, does user.id
 ```
 

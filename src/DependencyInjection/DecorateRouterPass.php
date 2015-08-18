@@ -25,7 +25,7 @@ final class DecorateRouterPass implements CompilerPassInterface
             $tag = current($tags);
             if (!array_key_exists('priority', $tag)) {
                 throw new \InvalidArgumentException(
-                    'The router.parameter_resolver tag requires a priority to be set for '.$serviceId.'.'
+                    sprintf('The router.parameter_resolver tag requires a priority to be set for %s.', $serviceId)
                 );
             }
 
@@ -37,7 +37,7 @@ final class DecorateRouterPass implements CompilerPassInterface
 
         usort($resolvers, function ($a, $b) {
             if ($a['priority'] === $b['priority']) {
-                return 0;
+                return strcmp($a['service'], $b['service']);
             }
 
             return $a['priority'] > $b['priority'] ? -1 : 1;

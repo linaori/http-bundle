@@ -2,13 +2,12 @@
 namespace Iltar\HttpBundle\Router;
 
 use Symfony\Component\PropertyAccess\PropertyAccess;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 /**
  * @author Iltar van der Berg <kjarli@gmail.com>
- * @covers Iltar\HttpBundle\Router\MappedGetterResolver
+ * @covers Iltar\HttpBundle\Router\MappablePropertyPathResolver
  */
-class MappedGetterResolverTest extends \PHPUnit_Framework_TestCase
+class MappablePropertyPathResolverTest extends \PHPUnit_Framework_TestCase
 {
     private static $mapping = [
         UserStub::class => [
@@ -27,7 +26,7 @@ class MappedGetterResolverTest extends \PHPUnit_Framework_TestCase
     public function testSupports()
     {
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
-        $resolver         = new MappedGetterResolver($propertyAccessor, self::$mapping);
+        $resolver         = new MappablePropertyPathResolver($propertyAccessor, self::$mapping);
 
         $this->assertTrue($resolver->supportsParameter('henk', new UserStub(410, 'henkje')));
         $this->assertTrue($resolver->supportsParameter('username', new UserStub(410, 'henkje')));
@@ -42,7 +41,7 @@ class MappedGetterResolverTest extends \PHPUnit_Framework_TestCase
     public function testResolve()
     {
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
-        $resolver         = new MappedGetterResolver($propertyAccessor, self::$mapping);
+        $resolver         = new MappablePropertyPathResolver($propertyAccessor, self::$mapping);
 
         $this->assertSame('420', $resolver->resolveParameter('fake key', new UserStub(420, 'janalleman')));
         $this->assertSame('henk', $resolver->resolveParameter('username', new UserStub(50, 'henk')));
@@ -57,7 +56,7 @@ class MappedGetterResolverTest extends \PHPUnit_Framework_TestCase
     public function testUnmapped()
     {
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
-        $resolver         = new MappedGetterResolver($propertyAccessor, []);
+        $resolver         = new MappablePropertyPathResolver($propertyAccessor, []);
 
         $this->assertTrue($resolver->supportsParameter('id', new UserStub(410, 'henkje')));
         $this->assertTrue($resolver->supportsParameter('username', new UserStub(410, 'henkje')));
