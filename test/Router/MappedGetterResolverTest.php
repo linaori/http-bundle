@@ -26,8 +26,8 @@ class MappedGetterResolverTest extends \PHPUnit_Framework_TestCase
 
     public function testSupports()
     {
-        $propertyAccessor = $this->prophesize(PropertyAccessor::class);
-        $resolver = new MappedGetterResolver($propertyAccessor->reveal(), self::$mapping);
+        $propertyAccessor = PropertyAccess::createPropertyAccessor();
+        $resolver         = new MappedGetterResolver($propertyAccessor, self::$mapping);
 
         $this->assertTrue($resolver->supportsParameter('henk', new UserStub(410, 'henkje')));
         $this->assertTrue($resolver->supportsParameter('username', new UserStub(410, 'henkje')));
@@ -52,6 +52,19 @@ class MappedGetterResolverTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame('420', $resolver->resolveParameter('id', new ReplyStub(420, new PostStub('slug2'))));
         $this->assertSame('a-slug', $resolver->resolveParameter('slug', new ReplyStub(420, new PostStub('a-slug'))));
+    }
+
+    public function testUnmapped()
+    {
+        $propertyAccessor = PropertyAccess::createPropertyAccessor();
+        $resolver         = new MappedGetterResolver($propertyAccessor, []);
+
+        $this->assertTrue($resolver->supportsParameter('id', new UserStub(410, 'henkje')));
+        $this->assertTrue($resolver->supportsParameter('username', new UserStub(410, 'henkje')));
+        $this->assertFalse($resolver->supportsParameter('henk', new UserStub(410, 'henkje')));
+
+        $this->assertSame('420', $resolver->resolveParameter('id', new UserStub(420, 'janalleman')));
+        $this->assertSame('henk', $resolver->resolveParameter('username', new UserStub(50, 'henk')));
     }
 }
 
@@ -87,6 +100,11 @@ class PostStub
     public function getSlug()
     {
         return $this->slug;
+    }
+
+    public function getTitle()
+    {
+        return $this->title;
     }
 }
 

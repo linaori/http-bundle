@@ -14,6 +14,11 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
  *    'App\Post' => ['_fallback' => 'slug'],
  *  ]
  *
+ * Uses the Property Accessor to read properties given by importance:
+ *   1. If mapped, the direct path
+ *   2. If mapped, the _fallback
+ *   3. If accessible, the Object.name
+ *
  * @author Iltar van der Berg <kjarli@gmail.com>
  */
 class MappedGetterResolver implements ParameterResolverInterface
@@ -39,14 +44,17 @@ class MappedGetterResolver implements ParameterResolverInterface
     }
 
     /**
-     * Supports anything that's mapped.
+     * Supports anything that's mapped or readable directly.
      *
      * {@inheritdoc}
      */
     public function supportsParameter($name, $entity)
     {
-        $part = $this->mapping[get_class($entity)];
-        return isset($part[$name]) || isset($part['_fallback']);
+        $class = get_class($entity);
+
+        return isset($this->mapping[$class][$name])
+            || isset($this->mapping[$class]['_fallback'])
+            || $this->propertyAccessor->isReadable($entity, $name);
     }
 
     /**
@@ -54,8 +62,18 @@ class MappedGetterResolver implements ParameterResolverInterface
      */
     public function resolveParameter($name, $entity)
     {
-        $part = $this->mapping[get_class($entity)];
-        $path = isset($part[$name]) ? $part[$name] : $part['_fallback'];
+        $class = get_class($entity);
+
+        switch (true) {
+            case isset($this->mapping[$class][$name]):
+                $path = $this->mapping[$class][$name];
+                break;
+            case isset($this->mapping[$class]['_fallback']):
+                $path = $this->mapping[$class]['_fallback'];
+                break;
+            default:
+                $path = $name;
+        }
 
         return (string) $this->propertyAccessor->getValue($entity, $path);
     }

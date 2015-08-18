@@ -3,7 +3,6 @@ namespace Iltar\HttpBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
@@ -26,30 +25,15 @@ final class DecorateRouterPass implements CompilerPassInterface
             $tag = current($tags);
             if (!array_key_exists('priority', $tag)) {
                 throw new \InvalidArgumentException(
-                    'The router.parameter_resolver tag requires a priority to be set for ' . $serviceId . '.'
+                    'The router.parameter_resolver tag requires a priority to be set for '.$serviceId.'.'
                 );
             }
-            $newId = 'iltar_http.parameter_resolver.' . $serviceId;
-
-            $container->setDefinition(
-                $newId,
-                (new DefinitionDecorator('iltar_http.parameter_resolver.abstract'))->replaceArgument(1, $serviceId)
-            );
 
             $resolvers[] = [
                 'priority' => $tag['priority'],
-                'service'  => $newId
+                'service'  => $serviceId
             ];
         }
-
-        if (empty($resolvers)) {
-            return;
-        }
-
-        $container->setDefinition(
-            'iltar_http.parameter_resolving_router',
-            new DefinitionDecorator('iltar_http.parameter_resolving_router.abstract')
-        );
 
         usort($resolvers, function ($a, $b) {
             if ($a['priority'] === $b['priority']) {
@@ -59,7 +43,8 @@ final class DecorateRouterPass implements CompilerPassInterface
             return $a['priority'] > $b['priority'] ? -1 : 1;
         });
 
-        $container->findDefinition('iltar_http.router.parameter_resolver_collection')
+        $container
+            ->findDefinition('iltar_http.router.parameter_resolver_collection')
             ->replaceArgument(0, array_map(function (array $resolver) {
                 return new Reference($resolver['service']);
             }, $resolvers));

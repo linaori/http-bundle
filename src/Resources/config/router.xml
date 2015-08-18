@@ -12,14 +12,15 @@
             <argument />
         </service>
 
-        <service abstract="true" id="iltar_http.parameter_resolver.abstract" class="Iltar\HttpBundle\Router\LazyParameterResolver">
-            <argument type="service" id="service_container" />
-            <argument />
-        </service>
-
-        <service abstract="true" decorates="router" public="false" id="iltar_http.parameter_resolving_router.abstract" class="Iltar\HttpBundle\Router\ParameterResolvingRouter">
+        <service decorates="router" public="false" id="iltar_http.parameter_resolving_router" class="Iltar\HttpBundle\Router\ParameterResolvingRouter">
             <argument type="service" id="iltar_http.parameter_resolving_router.inner" />
             <argument type="service" id="iltar_http.router.parameter_resolver_collection" />
+        </service>
+
+        <service id="iltar_http.router.mapped_getters" class="Iltar\HttpBundle\Router\MappedGetterResolver">
+            <argument type="service" id="property_access" />
+            <argument />
+            <tag name="router.parameter_resolver" priority="200" />
         </service>
 
     </services>

@@ -17,7 +17,7 @@ final class IltarHttpExtension extends Extension
     public function load(array $config, ContainerBuilder $container)
     {
         $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
         $this->processRouterConfig($config['router'], $container, $loader);
     }
@@ -35,16 +35,12 @@ final class IltarHttpExtension extends Extension
 
         $loader->load('router.xml');
 
+        $mapping = $this->convertMappedGetters($config['mapped_getters']);
+
+        $container->getDefinition('iltar_http.router.mapped_getters')->replaceArgument(1, $mapping);
+
         if (false !== $config['entity_id_resolver']) {
             $loader->load('entity_id_resolver.xml');
-        }
-
-        if (!empty($config['mapped_getters'])) {
-            $loader->load('mapped_getters.xml');
-
-            $mapping = $this->convertMappedGetters($config['mapped_getters']);
-
-            $container->getDefinition('iltar_http.router.mapped_getters')->replaceArgument(1, $mapping);
         }
     }
 
