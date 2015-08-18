@@ -26,6 +26,9 @@
     "doctrine/orm"             : "^2.5",
     "phpunit/phpunit"          : "^4.7"
   },
+  
+  "minimum-stability" : "dev",
+  "prefer-stable"     : true,
 
   "autoload": {
     "psr-4": {
