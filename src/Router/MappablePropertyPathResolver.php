@@ -50,6 +50,10 @@ class MappablePropertyPathResolver implements ParameterResolverInterface
      */
     public function supportsParameter($name, $entity)
     {
+        if (!is_object($entity)) {
+            return false;
+        }
+
         $class = get_class($entity);
 
         return isset($this->mapping[$class][$name])

@@ -28,6 +28,8 @@ class MappablePropertyPathResolverTest extends \PHPUnit_Framework_TestCase
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
         $resolver         = new MappablePropertyPathResolver($propertyAccessor, self::$mapping);
 
+        $this->assertFalse($resolver->supportsParameter('henk', ['henkje' => 'henk']));
+
         $this->assertTrue($resolver->supportsParameter('henk', new UserStub(410, 'henkje')));
         $this->assertTrue($resolver->supportsParameter('username', new UserStub(410, 'henkje')));
 
