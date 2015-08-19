@@ -12,6 +12,7 @@ Router Enhancements
 -------------------
 
 Lets pretend we have the following route:
+
 ```php
     /**
      * @Route("/profile/{user}/", name="app.view-profile")
@@ -19,12 +20,14 @@ Lets pretend we have the following route:
     public function viewProfileAction(AppUser $user);
 ```
 
-A parameter converter would nicely convert the value of your route to an `AppUser`, but how
-would you generate this route? This is still working with scalars:
+Let's say we have a [ParamConverter](http://symfony.com/doc/current/bundles/SensioFrameworkExtraBundle/annotations/converters.html)
+that would nicely convert the `user` parameter of your route to an `AppUser`, but how would you
+generate the route for this action? Sadly you still need a scalar as parameter for `Router::generate()`:
 
 ```php
 $router->generate('app.view-profile', ['user' => $user->getId()]);
 ```
+
 Okay, not really a big problem, but we're passing an id to a parameter which you would expect
 to have an `AppUser` if you look at the action. Another problem is that if you want to change
 the argument passed along, you will have to update every single usage of this URL. A decent
