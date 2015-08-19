@@ -1,6 +1,12 @@
 <?php
 namespace Iltar\HttpBundle\DependencyInjection;
 
+use Iltar\HttpBundle\DoctrineBridge\Router\EntityIdResolver;
+use Iltar\HttpBundle\Router\MappablePropertyPathResolver;
+use Iltar\HttpBundle\Router\ParameterResolverInterface;
+use Iltar\HttpBundle\Router\ParameterResolvingRouter;
+use Iltar\HttpBundle\Router\ResolverCollection;
+use Iltar\HttpBundle\Router\ResolverCollectionInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
@@ -34,13 +40,20 @@ final class IltarHttpExtension extends Extension
         }
 
         $loader->load('router.xml');
-
         $mapping = $this->convertMappedGetters($config['mapped_properties']);
-
         $container->getDefinition('iltar_http.router.mapped_properties')->replaceArgument(1, $mapping);
+
+        $this->addClassesToCompile([
+            MappablePropertyPathResolver::class,
+            ParameterResolverInterface::class,
+            ParameterResolvingRouter::class,
+            ResolverCollectionInterface::class,
+            ResolverCollection::class,
+        ]);
 
         if (false !== $config['entity_id_resolver']) {
             $loader->load('entity_id_resolver.xml');
+            $this->addClassesToCompile([EntityIdResolver::class]);
         }
     }
 
