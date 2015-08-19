@@ -31,8 +31,10 @@ class IltarHttpExtensionTest extends \PHPUnit_Framework_TestCase
                     'mapped_properties' => [
                         'App\Post'          => 'slug',
                         'App\User'          => 'id',
-                        'App\User.username' => 'username',
-                        'App\Reply.id'      => 'id',
+                        'App\User.user'     => 'username',
+                        'App\User.username' => '~',
+                        'App\Reply.rid'     => 'id',
+                        'App\Reply.id'      => null,
                         'App\Message.re.id' => 'id',
                     ]
                 ]
@@ -45,10 +47,12 @@ class IltarHttpExtensionTest extends \PHPUnit_Framework_TestCase
             ],
             'App\User' => [
                 '_fallback' => 'id',
+                'user'      => 'username',
                 'username'  => 'username',
             ],
             'App\Reply' => [
-                'id' => 'id',
+                'rid' => 'id',
+                'id'  => 'id',
             ],
             'App\Message' => [
                 're.id' => 'id',

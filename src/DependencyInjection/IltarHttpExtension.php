@@ -51,11 +51,21 @@ final class IltarHttpExtension extends Extension
     private function convertMappedGetters(array $mapping)
     {
         $mapped = [];
-        foreach ($mapping as $path => $method) {
+        foreach ($mapping as $path => $property) {
             $exploded = explode('.', $path, 2);
-            $key      = count($exploded) === 2 ? $exploded[1] : '_fallback';
 
-            $mapped[$exploded[0]][$key] = $method;
+            $key = '_fallback';
+
+            if (count($exploded) === 2) {
+                $key = $exploded[1];
+            }
+
+            // `App\AppUser.username: ~` would become `App\AppUser.username: username`
+            if (!is_string($property) || '~' === $property) {
+                $property = $key;
+            }
+
+            $mapped[$exploded[0]][$key] = $property;
         }
 
         return $mapped;
