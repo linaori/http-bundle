@@ -95,7 +95,7 @@ services:
 
 This is very nice, but a lot of work. Do I really have to write a resolver for each parameter
 I want to have resolved? The answer is simple: no. This package comes with two resolvers
-already. The most simple one is the `EntityIdResolver`> This resolver asks the `EntityManager`
+already. The most simple one is the `EntityIdResolver`. This resolver asks the `EntityManager`
 if the object is an entity and if so, it will call `getId()`. This resolver is disabled by
 default because you might not have doctrine in your project. To get this working, you will
 have to enable the doctrine bundle.
