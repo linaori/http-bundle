@@ -11,8 +11,6 @@ Recommended installation is via composer: `composer require iltar/http-bundle`.
 Router Enhancements
 -------------------
 
-Lets pretend we have the following route:
-
 ```php
     /**
      * @Route("/profile/{user}/", name="app.view-profile")
@@ -21,7 +19,7 @@ Lets pretend we have the following route:
 ```
 
 Let's say we have a [ParamConverter](http://symfony.com/doc/current/bundles/SensioFrameworkExtraBundle/annotations/converters.html)
-that would nicely convert the `user` parameter of your route to an `AppUser`, but how would you
+on this route that would nicely convert the `user` parameter of your route to an `AppUser`, but how would you
 generate the route for this action? Sadly you still need a scalar as parameter for `Router::generate()`:
 
 ```php
@@ -195,4 +193,10 @@ iltar_http:
 If you enable the `EntityIdResolver`, you can already let most cases get covered where your parameter is not
 called `id`. The case of `['user' => $user]` where you want the `id`, can just fall through this resolver by
 not defining the behavior. This will work out fine until you have a `user` property or `getUser()` method in
-`AppUser`.
+`AppUser`. To enable the `EntityIdResolver`, set the following configuration option to `true`:
+
+```yml
+iltar_http:
+    router:
+        entity_id_resolver: true
+```
