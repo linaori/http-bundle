@@ -86,6 +86,8 @@ class MappablePropertyPathResolverTest extends \PHPUnit_Framework_TestCase
             ['id', new UserSTub(410, 'henkje')],
             ['username', new UserStub(410, 'henkje')],
             ['henk', new UserStub(410, 'henkje'), false],
+
+            [1, new UserStub(410, 'henkje'), false],
         ];
     }
 
