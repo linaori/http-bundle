@@ -58,7 +58,7 @@ class MappablePropertyPathResolver implements ParameterResolverInterface
 
         return isset($this->mapping[$class][$name])
             || isset($this->mapping[$class]['_fallback'])
-            || $this->propertyAccessor->isReadable($entity, $name);
+            || (is_string($name) && $this->propertyAccessor->isReadable($entity, $name));
     }
 
     /**
