@@ -1,12 +1,9 @@
 # PHPUnit
 /phpunit.xml
 coverage/
+/test/Functional/Fixtures/cache
+/test/Functional/Fixtures/logs
 
 # composer
 /vendor/
-/composer.phar
 composer.lock
-
-# IDE
-/.idea/
-/.project/

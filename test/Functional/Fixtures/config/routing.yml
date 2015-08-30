@@ -1,0 +1,11 @@
+property_route:
+    path: /post/{title}
+
+method_route:
+    path: /post/{slug}
+
+mapped_property_route:
+    path: /post/{title_slug}
+
+mapped_fallback_route:
+    path: /post/{post}

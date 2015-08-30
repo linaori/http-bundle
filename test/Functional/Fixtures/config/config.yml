@@ -1,0 +1,10 @@
+framework:
+    secret: test
+    router:
+        resource: %kernel.root_dir%/config/routing.yml
+
+iltar_http:
+    router:
+        mapped_properties:
+            Iltar\HttpBundle\Functional\Fixtures\Model\MappedPost: id
+            Iltar\HttpBundle\Functional\Fixtures\Model\MappedPost.title_slug: slug
