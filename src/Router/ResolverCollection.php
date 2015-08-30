@@ -29,16 +29,18 @@ final class ResolverCollection implements ResolverCollectionInterface
         $resolved = [];
 
         foreach ($parameters as $key => $value) {
+            // default to the original value, in case no resolver supports the parameter
+            $resolved[$key] = $value;
+
             // no need to resolve scalars to another value
-            $resolved[$key] = is_scalar($value) ? $value : null;
+            if (is_scalar($value)) {
+                continue;
+            }
 
             foreach ($this->resolvers as $resolver) {
-                if (null !== $resolved[$key]) {
-                    break;
-                }
-
                 if ($resolver->supportsParameter($key, $value)) {
                     $resolved[$key] = $resolver->resolveParameter($key, $value);
+                    break;
                 }
             }
         }

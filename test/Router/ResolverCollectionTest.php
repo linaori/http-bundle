@@ -36,6 +36,13 @@ class ResolverCollectionTest extends \PHPUnit_Framework_TestCase
                     return 'henk';
                 })
             ],
+            [
+                ['user' => new \stdClass()],
+                ['user' => new \stdClass()],
+                new CallableResolver(function () {
+                    return false;
+                }, function () { })
+            ],
         ];
     }
 }
