@@ -23,49 +23,87 @@ class MappablePropertyPathResolverTest extends \PHPUnit_Framework_TestCase
         ],
     ];
 
-    public function testSupports()
+    /** @dataProvider getSupportsData */
+    public function testSupports($name, $parameter, $supported = true)
     {
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
         $resolver         = new MappablePropertyPathResolver($propertyAccessor, self::$mapping);
 
-        $this->assertFalse($resolver->supportsParameter('henk', ['henkje' => 'henk']));
-
-        $this->assertTrue($resolver->supportsParameter('henk', new UserStub(410, 'henkje')));
-        $this->assertTrue($resolver->supportsParameter('username', new UserStub(410, 'henkje')));
-
-        $this->assertTrue($resolver->supportsParameter('jan', new PostStub('henks-post')));
-        $this->assertTrue($resolver->supportsParameter('id', new PostStub('henks-post')));
-
-        $this->assertTrue($resolver->supportsParameter('id', new ReplyStub(420, new PostStub('slug'))));
-        $this->assertFalse($resolver->supportsParameter('henk', new ReplyStub(420, new PostStub('slug'))));
+        $this->assertEquals($supported, $resolver->supportsParameter($name, $parameter));
     }
 
-    public function testResolve()
+    public function getSupportsData()
+    {
+        return [
+            ['henk', ['henkje' => 'henk'], false],
+
+            ['henk', new UserStub(410, 'henkje')],
+            ['username', new UserStub(410, 'henkje')],
+
+            ['jan', new PostStub('henks-post')],
+            ['id', new PostStub('henks-post')],
+
+            ['id', new ReplyStub(420, new PostStub('slug'))],
+            ['henk', new ReplyStub(420, new PostStub('slug')), false],
+        ];
+    }
+
+    /** @dataProvider getResolveData */
+    public function testResolve($name, $parameter, $resolvedValue)
     {
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
-        $resolver         = new MappablePropertyPathResolver($propertyAccessor, self::$mapping);
+        $resolver = new MappablePropertyPathResolver($propertyAccessor, self::$mapping);
 
-        $this->assertSame('420', $resolver->resolveParameter('fake key', new UserStub(420, 'janalleman')));
-        $this->assertSame('henk', $resolver->resolveParameter('username', new UserStub(50, 'henk')));
-
-        $this->assertSame('henks-slug', $resolver->resolveParameter('any key', new PostStub('henks-slug')));
-        $this->assertSame('henks-slug', $resolver->resolveParameter('id', new PostStub('henks-slug')));
-
-        $this->assertSame('420', $resolver->resolveParameter('id', new ReplyStub(420, new PostStub('slug2'))));
-        $this->assertSame('a-slug', $resolver->resolveParameter('slug', new ReplyStub(420, new PostStub('a-slug'))));
+        $this->assertSame($resolvedValue, $resolver->resolveParameter($name, $parameter));
     }
 
-    public function testUnmapped()
+    public function getResolveData()
+    {
+        return [
+            ['fake key', new UserStub(420, 'janalleman'), '420'],
+            ['username', new UserStub(50, 'henk'), 'henk'],
+
+            ['any key', new PostStub('henks-slug'), 'henks-slug'],
+            ['id', new PostStub('henks-slug'), 'henks-slug'],
+
+            ['id', new ReplyStub(420, new PostStub('slug2')), '420'],
+            ['slug', new ReplyStub(420, new PostStub('a-slug')), 'a-slug'],
+        ];
+    }
+
+    /** @dataProvider getUnmappedSupportsData */
+    public function testUnmappedSupports($name, $parameter, $supported = true)
     {
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
         $resolver         = new MappablePropertyPathResolver($propertyAccessor, []);
 
-        $this->assertTrue($resolver->supportsParameter('id', new UserStub(410, 'henkje')));
-        $this->assertTrue($resolver->supportsParameter('username', new UserStub(410, 'henkje')));
-        $this->assertFalse($resolver->supportsParameter('henk', new UserStub(410, 'henkje')));
+        $this->assertEquals($supported, $resolver->supportsParameter($name, $parameter));
+    }
 
-        $this->assertSame('420', $resolver->resolveParameter('id', new UserStub(420, 'janalleman')));
-        $this->assertSame('henk', $resolver->resolveParameter('username', new UserStub(50, 'henk')));
+    public function getUnmappedSupportsData()
+    {
+        return [
+            ['id', new UserSTub(410, 'henkje')],
+            ['username', new UserStub(410, 'henkje')],
+            ['henk', new UserStub(410, 'henkje'), false],
+        ];
+    }
+
+    /** @dataProvider getUnmappedResolveData */
+    public function testUnmappedResolve($name, $parameter, $resolvedValue)
+    {
+        $propertyAccessor = PropertyAccess::createPropertyAccessor();
+        $resolver = new MappablePropertyPathResolver($propertyAccessor, []);
+
+        $this->assertSame($resolvedValue, $resolver->resolveParameter($name, $parameter));
+    }
+
+    public function getUnmappedResolveData()
+    {
+        return [
+            ['id', new UserStub(420, 'janalleman'), '420'],
+            ['username', new UserStub(50, 'henk'), 'henk'],
+        ];
     }
 }
 
