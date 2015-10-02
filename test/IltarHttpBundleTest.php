@@ -18,6 +18,6 @@ class IltarHttpBundleTest extends \PHPUnit_Framework_TestCase
         $bundle->build($container);
 
         $passes = $container->getCompiler()->getPassConfig()->getBeforeOptimizationPasses();
-        $this->assertInstanceOf(DecorateRouterPass::class, $passes[0]);
+        self::assertInstanceOf(DecorateRouterPass::class, $passes[0]);
     }
 }

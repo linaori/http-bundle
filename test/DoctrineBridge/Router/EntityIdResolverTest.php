@@ -15,7 +15,7 @@ class EntityIdResolverTest extends \PHPUnit_Framework_TestCase
         $manager  = $this->prophesize(ManagerRegistry::class);
         $resolver = new EntityIdResolver($manager->reveal());
 
-        $this->assertFalse($resolver->supportsParameter('user', ['id' => 400]));
+        self::assertFalse($resolver->supportsParameter('user', ['id' => 400]));
     }
 
     public function testObjectNotEntity()
@@ -26,11 +26,11 @@ class EntityIdResolverTest extends \PHPUnit_Framework_TestCase
 
         $manager->getRepository(get_class($object->reveal()))->shouldBeCalled()->willThrow(new MappingException());
 
-        $this->assertFalse($resolver->supportsParameter('user', $object->reveal()));
+        self::assertFalse($resolver->supportsParameter('user', $object->reveal()));
 
         // should hit the cache
-        $this->assertFalse($resolver->supportsParameter('user', $object->reveal()));
-        $this->assertAttributeSame([get_class($object->reveal()) => false], 'resolvedCache', $resolver);
+        self::assertFalse($resolver->supportsParameter('user', $object->reveal()));
+        self::assertAttributeSame([get_class($object->reveal()) => false], 'resolvedCache', $resolver);
     }
 
     /**
@@ -44,7 +44,7 @@ class EntityIdResolverTest extends \PHPUnit_Framework_TestCase
 
         $manager->getRepository(get_class($entity))->shouldBeCalled();
 
-        $this->assertTrue($resolver->supportsParameter('user', $entity));
+        self::assertTrue($resolver->supportsParameter('user', $entity));
         $resolver->resolveParameter('user', $entity);
     }
 
@@ -57,12 +57,12 @@ class EntityIdResolverTest extends \PHPUnit_Framework_TestCase
         $manager->getRepository(get_class($entity->reveal()))->shouldBeCalled();
         $entity->getId()->willReturn(420);
 
-        $this->assertTrue($resolver->supportsParameter('user', $entity->reveal()));
-        $this->assertSame('420', $resolver->resolveParameter('user', $entity->reveal()));
+        self::assertTrue($resolver->supportsParameter('user', $entity->reveal()));
+        self::assertSame('420', $resolver->resolveParameter('user', $entity->reveal()));
 
         // should hit the cache
-        $this->assertTrue($resolver->supportsParameter('user', $entity->reveal()));
-        $this->assertAttributeSame([get_class($entity->reveal()) => true], 'resolvedCache', $resolver);
+        self::assertTrue($resolver->supportsParameter('user', $entity->reveal()));
+        self::assertAttributeSame([get_class($entity->reveal()) => true], 'resolvedCache', $resolver);
     }
 }
 

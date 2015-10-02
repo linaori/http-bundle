@@ -21,7 +21,7 @@ class RouteGenerationTest extends KernelTestCase
     {
         $router = static::$kernel->getContainer()->get('router');
 
-        $this->assertEquals($expectedPath, $router->generate($routeName, $routeParameters));
+        self::assertEquals($expectedPath, $router->generate($routeName, $routeParameters));
     }
 
     public function getPropertyPathResolverData()

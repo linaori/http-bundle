@@ -32,11 +32,11 @@ class ParameterResolvingRouterTest extends \PHPUnit_Framework_TestCase
 
         $router = new ParameterResolvingRouter($decorated->reveal(), $collection->reveal());
         $router->setContext($context->reveal());
-        $this->assertSame($context->reveal(), $router->getContext());
-        $this->assertSame($routes->reveal(), $router->getRouteCollection());
-        $this->assertTrue($router->match('/path-matcher'));
-        $this->assertTrue($router->matchRequest($request->reveal()));
-        $this->assertEquals('/returned/path/', $router->generate('app.route'));
+        self::assertSame($context->reveal(), $router->getContext());
+        self::assertSame($routes->reveal(), $router->getRouteCollection());
+        self::assertTrue($router->match('/path-matcher'));
+        self::assertTrue($router->matchRequest($request->reveal()));
+        self::assertEquals('/returned/path/', $router->generate('app.route'));
     }
 
     /**
@@ -48,6 +48,6 @@ class ParameterResolvingRouterTest extends \PHPUnit_Framework_TestCase
         $collection = $this->prophesize(ResolverCollectionInterface::class);
         $request    = $this->prophesize(Request::class);
         $router     = new ParameterResolvingRouter($decorated->reveal(), $collection->reveal());
-        $this->assertTrue($router->matchRequest($request->reveal()));
+        self::assertTrue($router->matchRequest($request->reveal()));
     }
 }

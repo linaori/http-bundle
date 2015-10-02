@@ -33,7 +33,7 @@ class DecorateRouterPassTest extends \PHPUnit_Framework_TestCase
             ->addTag('router.parameter_resolver');
 
         $pass->process($container);
-        $this->assertFalse($container->has('iltar_http.parameter_resolving_router'));
+        self::assertFalse($container->has('iltar_http.parameter_resolving_router'));
     }
 
     public function testProcessNoResolvers()
@@ -48,7 +48,7 @@ class DecorateRouterPassTest extends \PHPUnit_Framework_TestCase
 
         $pass->process($this->container);
 
-        $this->assertTrue($this->container->has('iltar_http.parameter_resolving_router'));
+        self::assertTrue($this->container->has('iltar_http.parameter_resolving_router'));
     }
 
     public function testProcessMissingPriorityTag()
@@ -65,8 +65,8 @@ class DecorateRouterPassTest extends \PHPUnit_Framework_TestCase
 
         $pass->process($this->container);
 
-        $this->assertTrue($this->container->has('iltar_http.parameter_resolving_router'));
-        $this->assertTrue($this->container->has('iltar_http.parameter_resolver.app.henk'));
+        self::assertTrue($this->container->has('iltar_http.parameter_resolving_router'));
+        self::assertTrue($this->container->has('iltar_http.parameter_resolver.app.henk'));
     }
 
     public function testProcess()
@@ -107,7 +107,7 @@ class DecorateRouterPassTest extends \PHPUnit_Framework_TestCase
         $resolvers = $this->container->getDefinition('iltar_http.router.parameter_resolver_collection')->getArgument(0);
 
         foreach ($expectedResolvers as $i => $resolver) {
-            $this->assertSame($resolver, $resolvers[$i]->__toString());
+            self::assertSame($resolver, $resolvers[$i]->__toString());
         }
     }
 }
