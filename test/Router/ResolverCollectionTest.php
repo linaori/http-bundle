@@ -12,7 +12,7 @@ class ResolverCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testResolve(array $input, array $expected, CallableResolver $resolver)
     {
-        $this->assertEquals($expected, (new ResolverCollection([$resolver]))->resolve($input));
+        self::assertEquals($expected, (new ResolverCollection([$resolver]))->resolve($input));
     }
 
     public function resolveProvider()

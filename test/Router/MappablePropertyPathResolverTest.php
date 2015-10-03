@@ -29,7 +29,7 @@ class MappablePropertyPathResolverTest extends \PHPUnit_Framework_TestCase
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
         $resolver         = new MappablePropertyPathResolver($propertyAccessor, self::$mapping);
 
-        $this->assertEquals($supported, $resolver->supportsParameter($name, $parameter));
+        self::assertEquals($supported, $resolver->supportsParameter($name, $parameter));
     }
 
     public function getSupportsData()
@@ -54,7 +54,7 @@ class MappablePropertyPathResolverTest extends \PHPUnit_Framework_TestCase
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
         $resolver = new MappablePropertyPathResolver($propertyAccessor, self::$mapping);
 
-        $this->assertSame($resolvedValue, $resolver->resolveParameter($name, $parameter));
+        self::assertSame($resolvedValue, $resolver->resolveParameter($name, $parameter));
     }
 
     public function getResolveData()
@@ -77,7 +77,7 @@ class MappablePropertyPathResolverTest extends \PHPUnit_Framework_TestCase
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
         $resolver         = new MappablePropertyPathResolver($propertyAccessor, []);
 
-        $this->assertEquals($supported, $resolver->supportsParameter($name, $parameter));
+        self::assertEquals($supported, $resolver->supportsParameter($name, $parameter));
     }
 
     public function getUnmappedSupportsData()
@@ -97,7 +97,7 @@ class MappablePropertyPathResolverTest extends \PHPUnit_Framework_TestCase
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
         $resolver = new MappablePropertyPathResolver($propertyAccessor, []);
 
-        $this->assertSame($resolvedValue, $resolver->resolveParameter($name, $parameter));
+        self::assertSame($resolvedValue, $resolver->resolveParameter($name, $parameter));
     }
 
     public function getUnmappedResolveData()
