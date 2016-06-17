@@ -1,4 +1,5 @@
 <?php
+
 namespace Iltar\HttpBundle\Router;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -16,11 +17,11 @@ class ParameterResolvingRouterTest extends \PHPUnit_Framework_TestCase
 {
     public function testDelegation()
     {
-        $routes     = $this->prophesize(RouteCollection::class);
-        $context    = $this->prophesize(RequestContext::class);
-        $decorated  = $this->prophesize(RouterInterface::class)->willImplement(RequestMatcherInterface::class);
+        $routes = $this->prophesize(RouteCollection::class);
+        $context = $this->prophesize(RequestContext::class);
+        $decorated = $this->prophesize(RouterInterface::class)->willImplement(RequestMatcherInterface::class);
         $collection = $this->prophesize(ResolverCollectionInterface::class);
-        $request    = $this->prophesize(Request::class);
+        $request = $this->prophesize(Request::class);
 
         $decorated->setContext($context)->shouldBeCalled();
         $decorated->getContext()->willReturn($context);
@@ -44,10 +45,10 @@ class ParameterResolvingRouterTest extends \PHPUnit_Framework_TestCase
      */
     public function testMissingMatcher()
     {
-        $decorated  = $this->prophesize(RouterInterface::class);
+        $decorated = $this->prophesize(RouterInterface::class);
         $collection = $this->prophesize(ResolverCollectionInterface::class);
-        $request    = $this->prophesize(Request::class);
-        $router     = new ParameterResolvingRouter($decorated->reveal(), $collection->reveal());
+        $request = $this->prophesize(Request::class);
+        $router = new ParameterResolvingRouter($decorated->reveal(), $collection->reveal());
         self::assertTrue($router->matchRequest($request->reveal()));
     }
 }

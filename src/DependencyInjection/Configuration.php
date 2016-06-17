@@ -1,4 +1,5 @@
 <?php
+
 namespace Iltar\HttpBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
@@ -10,14 +11,13 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 class Configuration implements ConfigurationInterface
 {
-
     /**
      * {@inheritdoc}
      */
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode    = $treeBuilder->root('iltar_http');
+        $rootNode = $treeBuilder->root('iltar_http');
 
         $this->addRouterConfig($rootNode);
 
@@ -25,7 +25,7 @@ class Configuration implements ConfigurationInterface
     }
 
     /**
-     * Resolves iltar_http.router
+     * Resolves iltar_http.router.
      *
      * @param ArrayNodeDefinition $rootNode
      */

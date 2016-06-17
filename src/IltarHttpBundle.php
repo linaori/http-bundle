@@ -1,4 +1,5 @@
 <?php
+
 namespace Iltar\HttpBundle;
 
 use Iltar\HttpBundle\DependencyInjection\DecorateRouterPass;

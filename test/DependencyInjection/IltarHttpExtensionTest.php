@@ -1,4 +1,5 @@
 <?php
+
 namespace Iltar\HttpBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -12,7 +13,7 @@ class IltarHttpExtensionTest extends \PHPUnit_Framework_TestCase
 {
     public function testLoadWithRouter()
     {
-        $ext       = new IltarHttpExtension();
+        $ext = new IltarHttpExtension();
         $container = new ContainerBuilder();
         $ext->load([], $container);
 
@@ -23,22 +24,22 @@ class IltarHttpExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testLoadMappedResolvers()
     {
-        $ext       = new IltarHttpExtension();
+        $ext = new IltarHttpExtension();
         $container = new ContainerBuilder();
         $ext->load([
             'iltar_http' => [
                 'router' => [
                     'mapped_properties' => [
-                        'App\Post'          => 'slug',
-                        'App\User'          => 'id',
-                        'App\User.user'     => 'username',
+                        'App\Post' => 'slug',
+                        'App\User' => 'id',
+                        'App\User.user' => 'username',
                         'App\User.username' => '~',
-                        'App\Reply.rid'     => 'id',
-                        'App\Reply.id'      => null,
+                        'App\Reply.rid' => 'id',
+                        'App\Reply.id' => null,
                         'App\Message.re.id' => 'id',
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
         ], $container);
 
         $expected = [
@@ -47,12 +48,12 @@ class IltarHttpExtensionTest extends \PHPUnit_Framework_TestCase
             ],
             'App\User' => [
                 '_fallback' => 'id',
-                'user'      => 'username',
-                'username'  => 'username',
+                'user' => 'username',
+                'username' => 'username',
             ],
             'App\Reply' => [
                 'rid' => 'id',
-                'id'  => 'id',
+                'id' => 'id',
             ],
             'App\Message' => [
                 're.id' => 'id',
@@ -64,7 +65,7 @@ class IltarHttpExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testLoadWithEntityIdResolver()
     {
-        $ext       = new IltarHttpExtension();
+        $ext = new IltarHttpExtension();
         $container = new ContainerBuilder();
         $ext->load(['iltar_http' => ['router' => ['entity_id_resolver' => true]]], $container);
 
@@ -75,7 +76,7 @@ class IltarHttpExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testLoadNoRouter()
     {
-        $ext       = new IltarHttpExtension();
+        $ext = new IltarHttpExtension();
         $container = new ContainerBuilder();
         $ext->load(['iltar_http' => ['router' => ['enabled' => false]]], $container);
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace Iltar\HttpBundle\Router;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -28,7 +29,7 @@ final class ParameterResolvingRouter implements RouterInterface, RequestMatcherI
      */
     public function __construct(RouterInterface $router, ResolverCollectionInterface $resolverCollection)
     {
-        $this->router             = $router;
+        $this->router = $router;
         $this->resolverCollection = $resolverCollection;
     }
 

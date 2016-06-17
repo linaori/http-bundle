@@ -1,4 +1,5 @@
 <?php
+
 namespace Iltar\HttpBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
@@ -25,7 +26,7 @@ class DecorateRouterPassTest extends \PHPUnit_Framework_TestCase
 
     public function testProcessNotEnabled()
     {
-        $pass      = new DecorateRouterPass();
+        $pass = new DecorateRouterPass();
         $container = new ContainerBuilder();
         $container
             ->register('app.henk')
