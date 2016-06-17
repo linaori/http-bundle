@@ -1,4 +1,5 @@
 <?php
+
 namespace Iltar\HttpBundle\Router;
 
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -11,14 +12,14 @@ class MappablePropertyPathResolverTest extends \PHPUnit_Framework_TestCase
 {
     private static $mapping = [
         UserStub::class => [
-            'username'  => 'username',
+            'username' => 'username',
             '_fallback' => 'id',
         ],
         PostStub::class => [
             '_fallback' => 'slug',
         ],
         ReplyStub::class => [
-            'id'   => 'id',
+            'id' => 'id',
             'slug' => 'post.slug',
         ],
     ];
@@ -27,7 +28,7 @@ class MappablePropertyPathResolverTest extends \PHPUnit_Framework_TestCase
     public function testSupports($name, $parameter, $supported = true)
     {
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
-        $resolver         = new MappablePropertyPathResolver($propertyAccessor, self::$mapping);
+        $resolver = new MappablePropertyPathResolver($propertyAccessor, self::$mapping);
 
         self::assertEquals($supported, $resolver->supportsParameter($name, $parameter));
     }
@@ -75,7 +76,7 @@ class MappablePropertyPathResolverTest extends \PHPUnit_Framework_TestCase
     public function testUnmappedSupports($name, $parameter, $supported = true)
     {
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
-        $resolver         = new MappablePropertyPathResolver($propertyAccessor, []);
+        $resolver = new MappablePropertyPathResolver($propertyAccessor, []);
 
         self::assertEquals($supported, $resolver->supportsParameter($name, $parameter));
     }
@@ -115,7 +116,7 @@ class UserStub
     private $username;
     public function __construct($id, $username)
     {
-        $this->id       = $id;
+        $this->id = $id;
         $this->username = $username;
     }
 
@@ -155,7 +156,7 @@ class ReplyStub
     private $post;
     public function __construct($id, PostStub $post)
     {
-        $this->id   = $id;
+        $this->id = $id;
         $this->post = $post;
     }
 

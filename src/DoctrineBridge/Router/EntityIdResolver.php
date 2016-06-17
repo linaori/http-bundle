@@ -72,4 +72,3 @@ final class EntityIdResolver implements ParameterResolverInterface
         return (string) $callable();
     }
 }
-

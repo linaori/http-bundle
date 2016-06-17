@@ -1,10 +1,10 @@
 <?php
+
 namespace Iltar\HttpBundle;
 
 use Iltar\HttpBundle\Functional\Fixtures\Model\MappedPost;
 use Iltar\HttpBundle\Functional\Fixtures\Model\Post;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * @author Wouter J <wouter@wouterj.nl>

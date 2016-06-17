@@ -1,4 +1,5 @@
 <?php
+
 namespace Iltar\HttpBundle\DependencyInjection;
 
 use Iltar\HttpBundle\DoctrineBridge\Router\EntityIdResolver;
@@ -59,6 +60,7 @@ final class IltarHttpExtension extends Extension
 
     /**
      * @param array $mapping
+     *
      * @return array
      */
     private function convertMappedGetters(array $mapping)

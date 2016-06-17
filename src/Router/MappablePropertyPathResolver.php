@@ -1,4 +1,5 @@
 <?php
+
 namespace Iltar\HttpBundle\Router;
 
 use Symfony\Component\PropertyAccess\PropertyAccessor;
@@ -40,7 +41,7 @@ class MappablePropertyPathResolver implements ParameterResolverInterface
     public function __construct(PropertyAccessor $propertyAccessor, array $mapping)
     {
         $this->propertyAccessor = $propertyAccessor;
-        $this->mapping          = $mapping;
+        $this->mapping = $mapping;
     }
 
     /**

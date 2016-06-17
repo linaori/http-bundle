@@ -1,4 +1,5 @@
 <?php
+
 namespace Iltar\HttpBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -31,7 +32,7 @@ final class DecorateRouterPass implements CompilerPassInterface
 
             $resolvers[] = [
                 'priority' => $tag['priority'],
-                'service'  => $serviceId
+                'service' => $serviceId,
             ];
         }
 

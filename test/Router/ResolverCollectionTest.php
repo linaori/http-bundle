@@ -1,4 +1,5 @@
 <?php
+
 namespace Iltar\HttpBundle\Router;
 
 /**
@@ -25,7 +26,7 @@ class ResolverCollectionTest extends \PHPUnit_Framework_TestCase
                     return $key === 'user';
                 }, function ($key, $value) {
                     return $value.'-user';
-                })
+                }),
             ],
             [
                 ['user' => new \stdClass()],
@@ -34,14 +35,14 @@ class ResolverCollectionTest extends \PHPUnit_Framework_TestCase
                     return $key === 'user';
                 }, function () {
                     return 'henk';
-                })
+                }),
             ],
             [
                 ['user' => new \stdClass()],
                 ['user' => new \stdClass()],
                 new CallableResolver(function () {
                     return false;
-                }, function () { })
+                }, function () { }),
             ],
         ];
     }
@@ -58,16 +59,17 @@ class CallableResolver implements ParameterResolverInterface
         $this->resolves = $resolves;
     }
 
-
     public function supportsParameter($name, $value)
     {
         $m = $this->supports;
+
         return $m($name, $value);
     }
 
     public function resolveParameter($name, $value)
     {
         $m = $this->resolves;
+
         return $m($name, $value);
     }
 }

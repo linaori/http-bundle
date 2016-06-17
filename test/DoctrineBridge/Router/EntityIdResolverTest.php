@@ -1,4 +1,5 @@
 <?php
+
 namespace Iltar\HttpBundle\DoctrineBridge\Router;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -12,7 +13,7 @@ class EntityIdResolverTest extends \PHPUnit_Framework_TestCase
 {
     public function testArray()
     {
-        $manager  = $this->prophesize(ManagerRegistry::class);
+        $manager = $this->prophesize(ManagerRegistry::class);
         $resolver = new EntityIdResolver($manager->reveal());
 
         self::assertFalse($resolver->supportsParameter('user', ['id' => 400]));
@@ -20,8 +21,8 @@ class EntityIdResolverTest extends \PHPUnit_Framework_TestCase
 
     public function testObjectNotEntity()
     {
-        $manager  = $this->prophesize(ManagerRegistry::class);
-        $object   = $this->prophesize(TestObject::class);
+        $manager = $this->prophesize(ManagerRegistry::class);
+        $object = $this->prophesize(TestObject::class);
         $resolver = new EntityIdResolver($manager->reveal());
 
         $manager->getRepository(get_class($object->reveal()))->shouldBeCalled()->willThrow(new MappingException());
@@ -38,8 +39,8 @@ class EntityIdResolverTest extends \PHPUnit_Framework_TestCase
      */
     public function testEntityWithoutId()
     {
-        $manager  = $this->prophesize(ManagerRegistry::class);
-        $entity   = new \stdClass();
+        $manager = $this->prophesize(ManagerRegistry::class);
+        $entity = new \stdClass();
         $resolver = new EntityIdResolver($manager->reveal());
 
         $manager->getRepository(get_class($entity))->shouldBeCalled();
@@ -50,8 +51,8 @@ class EntityIdResolverTest extends \PHPUnit_Framework_TestCase
 
     public function testEntityWithId()
     {
-        $manager  = $this->prophesize(ManagerRegistry::class);
-        $entity   = $this->prophesize(TestEntityWithId::class);
+        $manager = $this->prophesize(ManagerRegistry::class);
+        $entity = $this->prophesize(TestEntityWithId::class);
         $resolver = new EntityIdResolver($manager->reveal());
 
         $manager->getRepository(get_class($entity->reveal()))->shouldBeCalled();
