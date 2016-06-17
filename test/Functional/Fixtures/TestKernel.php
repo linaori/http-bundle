@@ -15,6 +15,7 @@ class TestKernel extends Kernel
     {
         return array(
             new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
+            new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Iltar\HttpBundle\IltarHttpBundle(),
         );
     }

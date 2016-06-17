@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding ="UTF-8" ?>
 <container xmlns             = "http://symfony.com/schema/dic/services"
            xmlns:xsi         = "http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation= "http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd"
@@ -7,9 +7,13 @@
         <parameter key="iltar_http.router.entity_id_resolver.enabled">true</parameter>
     </parameters>
     <services>
-        <service id="iltar_http.router.entity_id_resolver" class="Iltar\HttpBundle\DoctrineBridge\Router\EntityIdResolver">
-            <argument type="service" id="doctrine" />
+        <service id="iltar_http.router.entity_id_resolver" class="Iltar\HttpBundle\Router\Resolver\IdentifyingValueResolver">
+            <argument type="service" id="iltar_http.recursive_id_finder" />
             <tag name="router.parameter_resolver" priority="100" />
+        </service>
+        <service id="iltar_http.recursive_id_finder" class="Iltar\HttpBundle\DoctrineBridge\EntityIdDescriptor" public="false">
+            <argument type="service" id="doctrine" />
+            <argument type="service" id="property_accessor" />
         </service>
     </services>
 </container>

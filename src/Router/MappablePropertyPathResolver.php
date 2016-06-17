@@ -2,7 +2,9 @@
 
 namespace Iltar\HttpBundle\Router;
 
-use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Iltar\HttpBundle\Router\Resolver\MappablePropertyPathResolver as BaseResolver;
+
+@trigger_error(sprintf('%s is deprecated as of 1.1 and will be removed in 2.0. Use the %s instead.', MappablePropertyPathResolver::class, BaseResolver::class), E_USER_DEPRECATED);
 
 /**
  * Resolves anything that's mapped.
@@ -21,65 +23,9 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
  *   3. If accessible, the Object.name
  *
  * @author Iltar van der Berg <kjarli@gmail.com>
+ *
+ * @deprecated as of 1.1 and will be removed in 2.0. Use the Iltar\HttpBundle\Router\Resolver\MappablePropertyPathResolver instead.
  */
-class MappablePropertyPathResolver implements ParameterResolverInterface
+class MappablePropertyPathResolver extends BaseResolver
 {
-    /**
-     * @var PropertyAccessor
-     */
-    private $propertyAccessor;
-
-    /**
-     * @var array
-     */
-    private $mapping;
-
-    /**
-     * @param PropertyAccessor $propertyAccessor
-     * @param array            $mapping
-     */
-    public function __construct(PropertyAccessor $propertyAccessor, array $mapping)
-    {
-        $this->propertyAccessor = $propertyAccessor;
-        $this->mapping = $mapping;
-    }
-
-    /**
-     * Supports anything that's mapped or readable directly.
-     *
-     * {@inheritdoc}
-     */
-    public function supportsParameter($name, $entity)
-    {
-        if (!is_object($entity)) {
-            return false;
-        }
-
-        $class = get_class($entity);
-
-        return isset($this->mapping[$class][$name])
-            || isset($this->mapping[$class]['_fallback'])
-            || (is_string($name) && $this->propertyAccessor->isReadable($entity, $name));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function resolveParameter($name, $entity)
-    {
-        $class = get_class($entity);
-
-        switch (true) {
-            case isset($this->mapping[$class][$name]):
-                $path = $this->mapping[$class][$name];
-                break;
-            case isset($this->mapping[$class]['_fallback']):
-                $path = $this->mapping[$class]['_fallback'];
-                break;
-            default:
-                $path = $name;
-        }
-
-        return (string) $this->propertyAccessor->getValue($entity, $path);
-    }
 }

@@ -4,7 +4,6 @@ namespace Iltar\HttpBundle\Router;
 
 /**
  * @author Iltar van der Berg <kjarli@gmail.com>
- * @covers Iltar\HttpBundle\Router\ResolverCollection
  */
 class ResolverCollectionTest extends \PHPUnit_Framework_TestCase
 {

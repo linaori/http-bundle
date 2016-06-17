@@ -7,7 +7,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * @author Iltar van der Berg <kjarli@gmail.com>
- * @covers Iltar\HttpBundle\IltarHttpBundle
  */
 class IltarHttpBundleTest extends \PHPUnit_Framework_TestCase
 {

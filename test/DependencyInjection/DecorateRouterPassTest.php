@@ -8,7 +8,6 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
 /**
  * @author Iltar van der Berg <kjarli@gmail.com>
- * @covers Iltar\HttpBundle\DependencyInjection\DecorateRouterPass
  */
 class DecorateRouterPassTest extends \PHPUnit_Framework_TestCase
 {
