@@ -25,7 +25,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
  *
  * @final as of 2.0, when the deprecated MappablePropertyPathResolver will be removed.
  */
-/*final*/ class MappablePropertyPathResolver implements ParameterResolverInterface
+/*final */class MappablePropertyPathResolver implements ParameterResolverInterface
 {
     /**
      * @var PropertyAccessor
