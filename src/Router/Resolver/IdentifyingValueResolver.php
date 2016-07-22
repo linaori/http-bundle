@@ -12,7 +12,7 @@ use Iltar\HttpBundle\Router\ParameterResolverInterface;
  *
  * @final as of 2.0, when the EntityIdResolver will be removed.
  */
-/*final*/ class IdentifyingValueResolver implements ParameterResolverInterface
+/*final */class IdentifyingValueResolver implements ParameterResolverInterface
 {
     /**
      * @var ModelDescriptorInterface

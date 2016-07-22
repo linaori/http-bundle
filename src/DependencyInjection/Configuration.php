@@ -39,7 +39,7 @@ class Configuration implements ConfigurationInterface
                     ->fixXmlConfig('mapped_property')
                     ->children()
                         ->booleanNode('entity_id_resolver')
-                            ->info('Enable or disable the EntityIdResolver')
+                            ->info('Enable or disable the EntityIdDescriptor which resolves entity ids')
                             ->defaultFalse()
                         ->end() // entity_id_resolver
                         ->arrayNode('mapped_properties')

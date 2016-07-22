@@ -44,6 +44,7 @@ final class EntityIdDescriptor implements ModelDescriptorInterface
      * Returns true of the implementation manages this type of object.
      *
      * @param mixed $object
+     *
      * @return bool
      */
     public function isManaged($object)
