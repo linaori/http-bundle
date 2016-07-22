@@ -11,7 +11,6 @@ use Symfony\Component\Routing\RouterInterface;
 
 /**
  * @author Iltar van der Berg <kjarli@gmail.com>
- * @covers Iltar\HttpBundle\Router\ParameterResolvingRouter
  */
 class ParameterResolvingRouterTest extends \PHPUnit_Framework_TestCase
 {

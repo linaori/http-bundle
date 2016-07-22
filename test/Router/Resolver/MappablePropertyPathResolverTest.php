@@ -1,6 +1,6 @@
 <?php
 
-namespace Iltar\HttpBundle\Router;
+namespace Iltar\HttpBundle\Router\Resolver;
 
 use Symfony\Component\PropertyAccess\PropertyAccess;
 

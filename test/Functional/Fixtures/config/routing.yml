@@ -9,3 +9,12 @@ mapped_property_route:
 
 mapped_fallback_route:
     path: /post/{post}
+
+client_route:
+    path: /client/{client}
+
+authentication_route:
+    path: /authentication/{authentication}
+
+message_route:
+    path: /message/{message}

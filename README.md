@@ -96,10 +96,13 @@ services:
 
 This is very nice, but a lot of work. Do I really have to write a resolver for each parameter
 I want to have resolved? The answer is simple: no. This package comes with two resolvers
-already. The most simple one is the `EntityIdResolver`. This resolver asks the `EntityManager`
-if the object is an entity and if so, it will call `getId()`. This resolver is disabled by
-default because you might not have doctrine in your project. To get this working, you will
-have to enable the doctrine bundle.
+already.
+
+The first resolver is the `IdentifyingValueResolver`. This resolver functions as a delegator
+for models implementing the `ModelDescriptorInterface`. This resolver will attempt to find
+the identifying value and obtain it. Currently this package ships with the following descriptors:
+ - `EntityIdDescriptor` - Attempts to get the value marked with `@Id` from a doctrine entity.
+
 
 The second resolver provided is the `MappablePropertyPathResolver`. It does two things:
  - Automagically tries to resolve the property required (more on this later),
@@ -107,8 +110,8 @@ The second resolver provided is the `MappablePropertyPathResolver`. It does two 
    component.
  - Allows you to override or wildcard certain objects via configuration.
 
-The `EntityIdresolver` is registered with a priority of 100. The `MappablePropertyPathResolver`
-is registered with a priority of 200.
+The `IdentifyingValueResolver` with the `EntityIdDescriptor` is registered with a priority of 
+100 by default. The `MappablePropertyPathResolver` is registered with a priority of 200.
 
 #### So how can I make it resolve my properties?
 
@@ -188,13 +191,15 @@ iltar_http:
             App\Client.first_address: address[0]
 ```
 
-##### Using the EntityIdResolver Alongside the MappablePropertyPathResolver
+##### Using the IdentifyingValueResolver Alongside the MappablePropertyPathResolver
 
-If you enable the `EntityIdResolver`, you can already let most cases get covered where your parameter is not
-called `id`. The case of `['user' => $user]` where you want the `id`, can just fall through this resolver by
-not defining the behavior. This will work out fine until you have a `user` property or `getUser()` method in
-`AppUser`. To enable the `EntityIdResolver`, set the following configuration option to `true`:
+If you enable the `IdentifyingValueResolver`, you can already cover the cases where your parameter is the `id`.
+When enabled you can can remove the definitions of the `mapped_properties` where you would refer to the
+primary key (usually id). The identifier is not limited to `id` or `getId()`, the resolver will dynamically
+attempt to find which field is the primary key. If the id happens to be another entity, it will try to get
+the id of that given entity until it finds a scalar. It does not support composite primary keys.
 
+To enable the id resolver you have to enable the configuration:
 ```yml
 iltar_http:
     router:

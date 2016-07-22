@@ -1,10 +1,27 @@
 framework:
     secret: test
     router:
-        resource: %kernel.root_dir%/config/routing.yml
+        resource: '%kernel.root_dir%/config/routing.yml'
+
+doctrine:
+    dbal:
+        connections:
+            default:
+                host: 127.0.0.1
+    orm:
+        entity_managers:
+            default:
+                auto_mapping: true
+                mappings:
+                    fixtures:
+                        type: annotation
+                        dir: '%kernel.root_dir%/Entity/'
+                        is_bundle: false
+                        prefix: Iltar\HttpBundle\Functional\Fixtures\Entity
 
 iltar_http:
     router:
+        entity_id_resolver: true
         mapped_properties:
             Iltar\HttpBundle\Functional\Fixtures\Model\MappedPost: id
             Iltar\HttpBundle\Functional\Fixtures\Model\MappedPost.title_slug: slug
