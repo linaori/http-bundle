@@ -3,6 +3,7 @@
 namespace Iltar\HttpBundle\Router;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\CacheWarmer\WarmableInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\Matcher\RequestMatcherInterface;
 use Symfony\Component\Routing\RequestContext;
@@ -11,7 +12,7 @@ use Symfony\Component\Routing\RouterInterface;
 /**
  * @author Iltar van der Berg <kjarli@gmail.com>
  */
-final class ParameterResolvingRouter implements RouterInterface, RequestMatcherInterface
+final class ParameterResolvingRouter implements RouterInterface, RequestMatcherInterface, WarmableInterface
 {
     /**
      * @var RouterInterface
@@ -83,5 +84,15 @@ final class ParameterResolvingRouter implements RouterInterface, RequestMatcherI
         }
 
         return $this->router->matchRequest($request);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function warmUp($cacheDir)
+    {
+        if ($this->router instanceof WarmableInterface) {
+            $this->router->warmUp($cacheDir);
+        }
     }
 }
