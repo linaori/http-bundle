@@ -3,6 +3,7 @@
 namespace Iltar\HttpBundle\Router;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\CacheWarmer\WarmableInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\Matcher\RequestMatcherInterface;
 use Symfony\Component\Routing\RequestContext;
@@ -37,6 +38,19 @@ class ParameterResolvingRouterTest extends \PHPUnit_Framework_TestCase
         self::assertTrue($router->match('/path-matcher'));
         self::assertTrue($router->matchRequest($request->reveal()));
         self::assertEquals('/returned/path/', $router->generate('app.route'));
+        self::assertNull($router->warmUp('/'));
+    }
+
+    public function testDelegationForWarmup()
+    {
+        $collection = $this->prophesize(ResolverCollectionInterface::class);
+        $decorated = $this->prophesize(RouterInterface::class)->willImplement(RequestMatcherInterface::class);
+        $decorated->willImplement(WarmableInterface::class);
+        $decorated->warmUp('/tmp')->shouldBeCalled();
+
+        $router = new ParameterResolvingRouter($decorated->reveal(), $collection->reveal());
+
+        self::assertNull($router->warmUp('/tmp'));
     }
 
     /**
