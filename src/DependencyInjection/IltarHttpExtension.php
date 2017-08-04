@@ -44,13 +44,15 @@ final class IltarHttpExtension extends Extension
         $mapping = $this->convertMappedGetters($config['mapped_properties']);
         $container->getDefinition('iltar_http.router.mapped_properties')->replaceArgument(1, $mapping);
 
-        $this->addClassesToCompile([
-            MappablePropertyPathResolver::class,
-            ParameterResolverInterface::class,
-            ParameterResolvingRouter::class,
-            ResolverCollectionInterface::class,
-            ResolverCollection::class,
-        ]);
+        if (PHP_VERSION_ID < 70000) {
+            $this->addClassesToCompile([
+                MappablePropertyPathResolver::class,
+                ParameterResolverInterface::class,
+                ParameterResolvingRouter::class,
+                ResolverCollectionInterface::class,
+                ResolverCollection::class,
+            ]);
+        }
 
         if (false !== $config['entity_id_resolver']) {
             $loader->load('entity_id_resolver.xml');
