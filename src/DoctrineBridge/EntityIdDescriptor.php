@@ -61,7 +61,9 @@ final class EntityIdDescriptor implements ModelDescriptorInterface
 
         try {
             $this->registry->getRepository($className);
-        } catch (MappingException $e) {
+        } catch (\Exception $e) {
+            return $this->resolvedCache[$className] = false;
+        } catch (\Throwable $e) {
             return $this->resolvedCache[$className] = false;
         }
 
