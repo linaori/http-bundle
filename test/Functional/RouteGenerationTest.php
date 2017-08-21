@@ -69,4 +69,21 @@ class RouteGenerationTest extends KernelTestCase
 
         $router->generate('message_route', ['blind_write' => new BlindWrite(10)]);
     }
+
+    /**
+     * @expectedException \Iltar\HttpBundle\Exception\UnresolvedParameterException
+     * @expectedExceptionMessage Parameters for the route 'mapped_fallback_route' could not be resolved to scalar values. Parameters: "object_key, empty_key, array_key, resource_key".
+     */
+    public function testEntityIdResolverWithWithoutAlternatives()
+    {
+        $router = static::$kernel->getContainer()->get('router');
+
+        $router->generate('mapped_fallback_route', [
+            'object_key' => new \stdClass(),
+            'empty_key' => '',
+            'array_key' => [],
+            'normal_key' => '10',
+            'resource_key' => fopen(__FILE__, 'rb'),
+        ]);
+    }
 }

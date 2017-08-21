@@ -2,6 +2,7 @@
 
 namespace Iltar\HttpBundle\Router;
 
+use Iltar\HttpBundle\Exception\UnresolvedParameterException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\CacheWarmer\WarmableInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -63,6 +64,27 @@ final class ParameterResolvingRouter implements RouterInterface, RequestMatcherI
      */
     public function generate($name, $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
     {
+        $resolvedParameters = $this->resolverCollection->resolve($parameters);
+        $unresolved = [];
+
+        foreach ($resolvedParameters as $key => $parameter) {
+            // sanity check for parameters that could not be resolved at all
+            if (!is_scalar($parameter)) {
+                $unresolved[$key] = is_object($parameter) ? get_class($parameter): gettype($parameter);
+                continue;
+            }
+
+            // sanity check for parameters that could not be resolved into a usable value
+            if ('' === (string) $parameter) {
+                $unresolved[$key] = gettype($parameter);
+                continue;
+            }
+        }
+
+        if (0 !== count($unresolved)) {
+            throw new UnresolvedParameterException($name, $unresolved);
+        }
+
         return $this->router->generate($name, $this->resolverCollection->resolve($parameters), $referenceType);
     }
 
