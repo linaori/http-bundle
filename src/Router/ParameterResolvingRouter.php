@@ -62,12 +62,17 @@ final class ParameterResolvingRouter implements RouterInterface, RequestMatcherI
     /**
      * {@inheritdoc}
      */
-    public function generate($name, $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
+    public function generate($name, $unresolvedParameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
     {
-        $resolvedParameters = $this->resolverCollection->resolve($parameters);
+        $parameters = $this->resolverCollection->resolve($unresolvedParameters);
         $unresolved = [];
 
-        foreach ($resolvedParameters as $key => $parameter) {
+        foreach ($parameters as $key => $parameter) {
+            // should skip parameters that didn't need resolving
+            if ($parameter === $unresolvedParameters[$key]) {
+                continue;
+            }
+
             // sanity check for parameters that could not be resolved at all
             if (!is_scalar($parameter)) {
                 $unresolved[$key] = is_object($parameter) ? get_class($parameter): gettype($parameter);
@@ -85,7 +90,7 @@ final class ParameterResolvingRouter implements RouterInterface, RequestMatcherI
             throw new UnresolvedParameterException($name, $unresolved);
         }
 
-        return $this->router->generate($name, $this->resolverCollection->resolve($parameters), $referenceType);
+        return $this->router->generate($name, $parameters, $referenceType);
     }
 
     /**
