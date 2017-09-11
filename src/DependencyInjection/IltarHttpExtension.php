@@ -56,7 +56,9 @@ final class IltarHttpExtension extends Extension
 
         if (false !== $config['entity_id_resolver']) {
             $loader->load('entity_id_resolver.xml');
-            $this->addClassesToCompile([IdentifyingValueResolver::class]);
+            if (PHP_VERSION_ID < 70000) {
+                $this->addClassesToCompile([IdentifyingValueResolver::class]);
+            }
         }
     }
 
