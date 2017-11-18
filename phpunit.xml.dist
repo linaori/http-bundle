@@ -6,6 +6,7 @@
     bootstrap                     = "vendor/autoload.php"
 >
     <php>
+        <server name="KERNEL_CLASS" value="TestKernel"/>
         <server name="KERNEL_DIR" value="test/Functional/Fixtures"/>
     </php>
     <testsuites>

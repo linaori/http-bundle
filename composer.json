@@ -15,26 +15,25 @@
 
   "require": {
     "php"                          : "^5.5||^7.0",
-    "symfony/config"               : "^2.7||^3.0",
-    "symfony/dependency-injection" : "^2.7||^3.0",
-    "symfony/framework-bundle"     : "^2.7||^3.0",
-    "symfony/http-kernel"          : "^2.7||^3.0",
-    "symfony/property-access"      : "^2.7||^3.0",
-    "symfony/routing"              : "^2.7||^3.0"
+    "symfony/config"               : "^2.7||^3.0||^4.0",
+    "symfony/dependency-injection" : "^2.7||^3.0||^4.0",
+    "symfony/framework-bundle"     : "^2.7||^3.0||^4.0",
+    "symfony/http-kernel"          : "^2.7||^3.0||^4.0",
+    "symfony/property-access"      : "^2.7||^3.0||^4.0",
+    "symfony/routing"              : "^2.7||^3.0||^4.0"
   },
 
   "require-dev" : {
-    "symfony/finder"           : "^2.7||^3.0",
+    "symfony/finder"           : "^2.7||^3.0||^4.0",
     "doctrine/doctrine-bundle" : "^1.5.0",
     "doctrine/orm"             : "^2.5",
     "phpunit/phpunit"          : "^4.7||^5.0",
-    "symfony/phpunit-bridge"   : "^2.8||^3.0",
-    "symfony/security-http"    : "^2.7||^3.0",
-    "symfony/var-dumper"       : "^2.7"
+    "symfony/phpunit-bridge"   : "^2.8||^3.0||^4.0",
+    "symfony/security-http"    : "^2.7||^3.0||^4.0",
+    "symfony/var-dumper"       : "^2.7||^3.0||^4.0"
   },
 
   "minimum-stability" : "dev",
-  "prefer-stable"     : true,
 
   "autoload": {
     "psr-4": {
@@ -45,7 +44,10 @@
   "autoload-dev": {
     "psr-4": {
       "Iltar\\HttpBundle\\" : "test/"
-    }
+    },
+    "classmap": [
+      "test/Functional/Fixtures/TestKernel.php"
+    ]
   },
 
   "archive": {
