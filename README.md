@@ -1,3 +1,5 @@
+This package is now archived. If you wish to keep using it, please fork it.
+
 http-bundle
 ===========
 Provides extra HTTP related functionality in Symfony.
